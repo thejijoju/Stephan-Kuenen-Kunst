@@ -133,7 +133,7 @@
         <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: 0.12em; text-transform: uppercase; color: #908a7e;">{{ t.price }}</span>
       </div>
     </div>
-    <div class="sk-hero-img" style="min-height: 540px; background: #e7edee url('artworks/hero-abstract.jpg') center/cover no-repeat;"></div>
+    <div class="sk-hero-img" style="min-height: 540px; background: #e7edee url('https://res.cloudinary.com/dmm56rtb0/image/upload/f_auto,q_auto,w_1400/artworks/hero-abstract.jpg') center/cover no-repeat;"></div>
   </section>
 
   <!-- ============ SERIEN / THEMES ============ -->
@@ -191,7 +191,7 @@
 
   <!-- ============ ÜBER / ABOUT ============ -->
   <section id="ueber" class="sk-about" style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0; border-top: 1px solid #eceae5;">
-    <div style="min-height: 460px; background: #d9d4cc url('artworks/about-papa.jpg') center 26%/cover no-repeat;"></div>
+    <div style="min-height: 460px; background: #d9d4cc url('https://res.cloudinary.com/dmm56rtb0/image/upload/f_auto,q_auto,w_1200/artworks/about-papa.jpg') center 26%/cover no-repeat;"></div>
     <div class="sk-wrap" style="padding: 80px 56px; display: flex; flex-direction: column; justify-content: center;">
       <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase; color: #8B0000; margin-bottom: 24px;">{{ t.aboutKicker }}</div>
       <h2 style="font-weight: 700; font-size: 34px; letter-spacing: -0.025em; line-height: 1.08; margin: 0 0 24px;">{{ t.aboutTitle }}</h2>
@@ -207,7 +207,7 @@
         <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: 0.14em; text-transform: uppercase; color: #8B0000; margin-top: 12px;">{{ t.aboutKunst }}</div>
       </div>
       <div style="margin-top: 30px; padding: 18px; border: 1px solid #e7e3db; border-radius: 4px; background: #f4f1ea; display: flex; align-items: center; gap: 22px; max-width: 520px;">
-        <img src="artworks/katalog-cover.jpg" alt="Werkkatalog Stephan Kuenen" loading="lazy" style="width: 106px; height: 140px; object-fit: cover; border-radius: 2px; box-shadow: 0 10px 24px -10px rgba(0,0,0,.55); flex-shrink: 0;" />
+        <img src="https://res.cloudinary.com/dmm56rtb0/image/upload/f_auto,q_auto,w_300/artworks/katalog-cover.jpg" alt="Werkkatalog Stephan Kuenen" loading="lazy" style="width: 106px; height: 140px; object-fit: cover; border-radius: 2px; box-shadow: 0 10px 24px -10px rgba(0,0,0,.55); flex-shrink: 0;" />
         <div style="flex: 1; min-width: 0;">
           <div style="font-weight: 600; font-size: 15px; margin-bottom: 4px;">{{ t.catTitle }}</div>
           <div style="font-size: 13px; color: #6a655b; line-height: 1.5; margin-bottom: 13px;">{{ t.catText }}</div>
@@ -405,6 +405,10 @@
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:900}}">
 // ---------- Formspree endpoint ----------
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xkoljddd';
+
+// ---------- Cloudinary ----------
+const CL = 'https://res.cloudinary.com/dmm56rtb0/image/upload';
+function clImg(path, w) { return CL + '/f_auto,q_auto,w_' + w + '/' + path; }
 
 // ---------- artwork data ----------
 function sq(bg){ return { background: bg, aspectRatio: '1/1', borderRadius: '2px' }; }
@@ -852,9 +856,8 @@ class Component extends DCLogic {
   scrollContact() { if (this.contactEl) window.scrollTo({ top: this.contactEl.offsetTop - 10, behavior: 'smooth' }); }
 
   decorate(w, t) {
-    const thumb = w.img ? w.img.replace('artworks/', 'artworks/thumbs/') : null;
-    const swBg = thumb ? "#efece6 url('" + thumb + "') " + (w.pos || 'center') + "/cover no-repeat" : w.bg;
-    const bigBg = w.img ? "#efece6 url('" + w.img + "') center/contain no-repeat" : w.bg;
+    const swBg = w.img ? "#efece6 url('" + clImg(w.img, 600) + "') " + (w.pos || 'center') + "/cover no-repeat" : w.bg;
+    const bigBg = w.img ? "#efece6 url('" + clImg(w.img, 1400) + "') center/contain no-repeat" : w.bg;
     return {
       ...w,
       themeLabel: t['lbl_' + w.theme],
@@ -966,8 +969,8 @@ class Component extends DCLogic {
       meta: g.meta,
       tiles: g.photos.map((name, i) => {
         const s = exhibSize(i);
-        const full = 'artworks/exhibitions/' + name + '.jpg';
-        const thumb = 'artworks/exhibitions/thumbs/' + name + '.jpg';
+        const full = clImg('artworks/exhibitions/' + name + '.jpg', 2000);
+        const thumb = clImg('artworks/exhibitions/' + name + '.jpg', 600);
         return {
           tileStyle: { gridColumn: 'span ' + s.cols, gridRow: 'span ' + s.rows, background: "#e7edee url('" + thumb + "') center/cover no-repeat", borderRadius: '2px', cursor: 'pointer', overflow: 'hidden' },
           onClick: () => this.setState({ exhibSel: full }),
@@ -1027,9 +1030,9 @@ class Component extends DCLogic {
   }
 
   themePreview(theme) {
-    if (theme === 'wandflicken') return "#efece6 url('artworks/thumbs/wandflicken-mint.jpg') center/cover no-repeat";
-    if (theme === 'masters') return "#efece6 url('artworks/thumbs/modersohn.jpg') center/cover no-repeat";
-    return "#efece6 url('artworks/thumbs/die-kerze-2020.jpg') center/cover no-repeat";
+    if (theme === 'wandflicken') return "#efece6 url('" + clImg('artworks/wandflicken-mint.jpg', 800) + "') center/cover no-repeat";
+    if (theme === 'masters') return "#efece6 url('" + clImg('artworks/modersohn.jpg', 800) + "') center/cover no-repeat";
+    return "#efece6 url('" + clImg('artworks/die-kerze-2020.jpg', 800) + "') center/cover no-repeat";
   }
 }
 </script>
