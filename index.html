@@ -79,20 +79,37 @@
   ::selection { background: #161412; color: #fff; }
   a { color: inherit; text-decoration: none; }
   input, textarea, button { font-family: inherit; }
+  .sk-hamburger { display: none; }
   @media (max-width: 760px) {
     .sk-nav { display: none !important; }
+    .sk-hamburger { display: flex !important; }
+    header { padding: 14px 20px !important; }
     .sk-hero { grid-template-columns: 1fr !important; }
-    .sk-hero-img { min-height: 280px !important; }
-    .sk-h1 { font-size: 48px !important; }
-    .sk-wrap { padding-left: 22px !important; padding-right: 22px !important; }
+    .sk-hero-img { min-height: 240px !important; }
+    .sk-hero-text { padding: 40px 20px 36px !important; }
+    .sk-h1 { font-size: 42px !important; line-height: 0.96 !important; }
+    .sk-wrap { padding-left: 20px !important; padding-right: 20px !important; }
+    section.sk-wrap { padding-top: 44px !important; padding-bottom: 44px !important; }
+    .sk-about .sk-wrap { padding-top: 36px !important; padding-bottom: 36px !important; }
+    .sk-about-img { min-height: 280px !important; }
+    .sk-sh { flex-direction: column !important; align-items: flex-start !important; gap: 4px !important; }
+    .sk-rh { flex-direction: column !important; align-items: flex-start !important; gap: 6px !important; }
     .sk-grid3 { grid-template-columns: 1fr !important; }
     .sk-grid4 { grid-template-columns: repeat(2, 1fr) !important; }
     .sk-about { grid-template-columns: 1fr !important; }
-    .sk-contact-grid { grid-template-columns: 1fr !important; }
+    .sk-contact-grid { grid-template-columns: 1fr !important; gap: 28px !important; }
     .sk-form-grid { grid-template-columns: 1fr !important; }
     .sk-form-span2 { grid-column: span 1 !important; }
-    header { padding: 14px 22px !important; }
-    footer { padding: 20px 22px !important; flex-direction: column !important; gap: 10px !important; }
+    footer { padding: 20px 20px !important; flex-direction: column !important; gap: 10px !important; }
+    .sk-exhib-grid { grid-auto-rows: 150px !important; }
+    .sk-modal-outer { padding: 0 !important; align-items: flex-end !important; }
+    .sk-modal-inner { grid-template-columns: 1fr !important; overflow-y: auto !important; max-height: 92vh !important; border-radius: 8px 8px 0 0 !important; }
+    .sk-modal-img { padding: 22px !important; min-height: 200px !important; }
+    .sk-modal-info { padding: 22px 20px 28px !important; }
+    .sk-coll-hdr { padding: 14px 20px !important; }
+    .sk-coll-intro { padding: 28px 20px 14px !important; }
+    .sk-coll-grid { padding: 10px 20px 44px !important; }
+    .sk-coll-ft { padding: 18px 20px 36px !important; flex-direction: column !important; gap: 6px !important; }
   }
 </style>
 </helmet>
@@ -120,11 +137,48 @@
         <span style="position: absolute; right: 13px; pointer-events: none; font-size: 8px; color: #908a7e;">▼</span>
       </div>
     </nav>
+    <button class="sk-hamburger" onClick="{{ toggleMenu }}" aria-label="Menu" style="align-items: center; justify-content: center; background: none; border: none; cursor: pointer; padding: 6px; margin: -6px;">
+      <svg width="22" height="16" viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect y="0" width="22" height="2" rx="1" fill="#161412"/>
+        <rect y="7" width="22" height="2" rx="1" fill="#161412"/>
+        <rect y="14" width="22" height="2" rx="1" fill="#161412"/>
+      </svg>
+    </button>
   </header>
+
+  <!-- ============ MOBILE MENU ============ -->
+  <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; z-index: 50; background: #fbfaf8; display: flex; flex-direction: column; font-family: 'Space Grotesk', sans-serif; overflow-y: auto;">
+      <div style="display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-bottom: 1px solid #eceae5; background: rgba(251,250,248,0.96); backdrop-filter: blur(10px);">
+        <a href="#top" onClick="{{ closeMenu }}" style="display: flex; align-items: center; gap: 9px; text-decoration: none;">
+          <span><span style="font-weight: 700; color: #161412; font-size: 21px;">K</span><span style="font-weight: 700; color: #161412; font-size: 21px;">U</span><span style="font-weight: 300; color: #161412;">e</span><span style="font-weight: 700; color: #161412; font-size: 21px;">N</span><span style="font-weight: 300; color: #161412;">en</span></span>
+          <span style="width: 2px; height: 22px; background: #161412; display: inline-block; border-radius: 1px;"></span>
+          <span><span style="font-weight: 700; color: #161412; font-size: 21px;">S</span><span style="font-weight: 700; color: #161412; font-size: 21px;">T</span><span style="font-weight: 300; color: #161412;">ephan</span></span>
+        </a>
+        <button onClick="{{ closeMenu }}" style="background: none; border: none; cursor: pointer; font-size: 28px; line-height: 1; color: #5c574e; padding: 4px 8px;">×</button>
+      </div>
+      <nav style="display: flex; flex-direction: column; padding: 8px 0; flex: 1;">
+        <a href="#werk" onClick="{{ closeMenu }}" style="font-size: 26px; font-weight: 700; letter-spacing: -0.02em; color: #161412; padding: 18px 28px; border-bottom: 1px solid #eceae5; text-decoration: none;">{{ t.navWork }}</a>
+        <a href="#serien" onClick="{{ closeMenu }}" style="font-size: 26px; font-weight: 700; letter-spacing: -0.02em; color: #161412; padding: 18px 28px; border-bottom: 1px solid #eceae5; text-decoration: none;">{{ t.navSeries }}</a>
+        <a href="#ueber" onClick="{{ closeMenu }}" style="font-size: 26px; font-weight: 700; letter-spacing: -0.02em; color: #161412; padding: 18px 28px; border-bottom: 1px solid #eceae5; text-decoration: none;">{{ t.navAbout }}</a>
+        <a href="#ausstellungen" onClick="{{ closeMenu }}" style="font-size: 26px; font-weight: 700; letter-spacing: -0.02em; color: #161412; padding: 18px 28px; border-bottom: 1px solid #eceae5; text-decoration: none;">{{ t.navExhib }}</a>
+        <a href="#kontakt" onClick="{{ closeMenu }}" style="font-size: 26px; font-weight: 700; letter-spacing: -0.02em; color: #161412; padding: 18px 28px; text-decoration: none;">{{ t.navContact }}</a>
+      </nav>
+      <div style="padding: 24px 28px; border-top: 1px solid #eceae5;">
+        <div style="position: relative; display: inline-flex; align-items: center;">
+          <select value="{{ lang }}" onChange="{{ onLangChange }}" style="appearance: none; -webkit-appearance: none; background: #fff; border: 1px solid #e0ddd6; border-radius: 999px; padding: 10px 36px 10px 18px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; letter-spacing: 0.08em; color: #161412; cursor: pointer; outline: none;">
+            <option value="de">DE · Deutsch</option>
+            <option value="en">EN · English</option>
+          </select>
+          <span style="position: absolute; right: 16px; pointer-events: none; font-size: 9px; color: #908a7e;">▼</span>
+        </div>
+      </div>
+    </div>
+  </sc-if>
 
   <!-- ============ HERO ============ -->
   <section id="top" class="sk-hero" style="display: grid; grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr); align-items: stretch; border-bottom: 1px solid #eceae5;">
-    <div class="sk-wrap" style="padding: 92px 56px 84px; display: flex; flex-direction: column; justify-content: center;">
+    <div class="sk-wrap sk-hero-text" style="padding: 92px 56px 84px; display: flex; flex-direction: column; justify-content: center;">
       <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase; color: #5c574e; margin-bottom: 30px;">{{ t.roleLine }}</div>
       <h1 class="sk-h1" style="font-weight: 700; font-size: 76px; line-height: 0.92; letter-spacing: -0.035em; margin: 0;">{{ t.hero1 }}<br><span style="color: #161412;">{{ t.hero2 }}</span></h1>
       <p style="font-size: 17px; line-height: 1.62; color: #545049; margin: 32px 0 36px; max-width: 400px;">{{ t.heroSub }}</p>
@@ -138,7 +192,7 @@
 
   <!-- ============ SERIEN / THEMES ============ -->
   <section id="serien" class="sk-wrap" style="padding: 84px 56px 70px;">
-    <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; margin-bottom: 46px;">
+    <div class="sk-sh" style="display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; margin-bottom: 46px;">
       <h2 style="font-weight: 700; font-size: 38px; letter-spacing: -0.025em; margin: 0;">{{ t.seriesTitle }}</h2>
       <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #908a7e;">{{ t.seriesKicker }}</span>
     </div>
@@ -158,13 +212,13 @@
 
   <!-- ============ WERK / GALLERY ============ -->
   <section id="werk" class="sk-wrap" style="padding: 40px 56px 90px; border-top: 1px solid #eceae5;">
-    <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; margin: 44px 0 40px;">
+    <div class="sk-sh" style="display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; margin: 44px 0 40px;">
       <h2 style="font-weight: 700; font-size: 38px; letter-spacing: -0.025em; margin: 0;">{{ t.galleryTitle }}</h2>
       <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #908a7e;">{{ t.galleryHint }}</span>
     </div>
     <sc-for list="{{ rows }}" as="row" hint-placeholder-count="3">
       <div id="row-{{ row.key }}" style="margin-bottom: 58px;">
-        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin-bottom: 20px;">
+        <div class="sk-rh" style="display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin-bottom: 20px;">
           <div style="display: flex; align-items: baseline; gap: 14px;">
             <h3 style="font-weight: 700; font-size: 25px; letter-spacing: -0.02em; margin: 0;">{{ row.label }}</h3>
             <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: 0.08em; color: #908a7e; white-space: nowrap;">{{ row.countLabel }}</span>
@@ -191,7 +245,7 @@
 
   <!-- ============ ÜBER / ABOUT ============ -->
   <section id="ueber" class="sk-about" style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0; border-top: 1px solid #eceae5;">
-    <div style="min-height: 460px; background: #d9d4cc url('https://res.cloudinary.com/dmm56rtb0/image/upload/f_auto,q_auto,w_1200/about-papa') center 26%/cover no-repeat;"></div>
+    <div class="sk-about-img" style="min-height: 460px; background: #d9d4cc url('https://res.cloudinary.com/dmm56rtb0/image/upload/f_auto,q_auto,w_1200/about-papa') center 26%/cover no-repeat;"></div>
     <div class="sk-wrap" style="padding: 80px 56px; display: flex; flex-direction: column; justify-content: center;">
       <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase; color: #8B0000; margin-bottom: 24px;">{{ t.aboutKicker }}</div>
       <h2 style="font-weight: 700; font-size: 34px; letter-spacing: -0.025em; line-height: 1.08; margin: 0 0 24px;">{{ t.aboutTitle }}</h2>
@@ -222,7 +276,7 @@
 
   <!-- ============ AUSSTELLUNGEN / EXHIBITIONS ============ -->
   <section id="ausstellungen" class="sk-wrap" style="padding: 84px 56px 90px; border-top: 1px solid #eceae5;">
-    <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; margin-bottom: 18px;">
+    <div class="sk-sh" style="display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; margin-bottom: 18px;">
       <h2 style="font-weight: 700; font-size: 38px; letter-spacing: -0.025em; margin: 0;">{{ t.exhibTitle }}</h2>
       <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #908a7e;">{{ t.exhibKicker }}</span>
     </div>
@@ -233,7 +287,7 @@
           <h3 style="font-weight: 700; font-size: 24px; letter-spacing: -0.02em; margin: 0;">{{ ex.title }}</h3>
           <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: #8B0000;">{{ ex.meta }}</span>
         </div>
-        <div class="sk-grid4" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: 200px; gap: 16px; grid-auto-flow: dense;">
+        <div class="sk-grid4 sk-exhib-grid" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: 200px; gap: 16px; grid-auto-flow: dense;">
           <sc-for list="{{ ex.tiles }}" as="t" hint-placeholder-count="3">
             <div onClick="{{ t.onClick }}" style="{{ t.tileStyle }}" style-hover="opacity: 0.92;"></div>
           </sc-for>
@@ -328,7 +382,7 @@
   <!-- ============ SAMMLUNG / FULL COLLECTION ============ -->
   <sc-if value="{{ isCollection }}" hint-placeholder-val="{{ false }}">
     <div style="position: fixed; inset: 0; z-index: 80; overflow-y: auto; background: #fbfaf8; font-family: 'Space Grotesk', sans-serif; color: #161412;">
-      <div style="position: sticky; top: 0; z-index: 4; display: flex; align-items: center; justify-content: space-between; padding: 20px 48px; background: rgba(251,250,248,0.92); backdrop-filter: blur(8px); border-bottom: 1px solid #eceae5;">
+      <div class="sk-coll-hdr" style="position: sticky; top: 0; z-index: 4; display: flex; align-items: center; justify-content: space-between; padding: 20px 48px; background: rgba(251,250,248,0.92); backdrop-filter: blur(8px); border-bottom: 1px solid #eceae5;">
         <a href="#" onClick="{{ closeCollection }}" style="display: flex; align-items: center; gap: 9px; text-decoration: none; font-family: 'Space Grotesk', sans-serif; font-size: 18px; letter-spacing: 0.02em;">
           <span><span style="font-weight: 700; color: #161412; font-size: 21px;">K</span><span style="font-weight: 700; color: #161412; font-size: 21px;">U</span><span style="font-weight: 300; color: #161412;">e</span><span style="font-weight: 700; color: #161412; font-size: 21px;">N</span><span style="font-weight: 300; color: #161412;">en</span></span>
           <span style="width: 2px; height: 22px; background: #161412; display: inline-block; border-radius: 1px;"></span>
@@ -345,7 +399,7 @@
           </div>
         </div>
       </div>
-      <div style="padding: 56px 48px 30px;">
+      <div class="sk-coll-intro" style="padding: 56px 48px 30px;">
         <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: #8B0000; margin-bottom: 16px;">{{ t.collKicker }}</div>
         <div style="display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap;">
           <h1 style="font-weight: 700; font-size: 46px; letter-spacing: -0.03em; margin: 0;">{{ coll.label }}</h1>
@@ -353,7 +407,7 @@
         </div>
         <p style="font-size: 16px; line-height: 1.6; color: #6a655b; margin: 18px 0 0; max-width: 640px;">{{ coll.desc }}</p>
       </div>
-      <div class="sk-grid4" style="padding: 20px 48px 70px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px;">
+      <div class="sk-grid4 sk-coll-grid" style="padding: 20px 48px 70px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px;">
         <sc-for list="{{ coll.works }}" as="w" hint-placeholder-count="12">
           <div onClick="{{ w.onClick }}" style="cursor: pointer;" style-hover="opacity: 0.92;">
             <div style="{{ w.swStyle }}"></div>
@@ -365,7 +419,7 @@
           </div>
         </sc-for>
       </div>
-      <div style="padding: 30px 48px 60px; border-top: 1px solid #eceae5; display: flex; justify-content: space-between; align-items: center; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: 0.06em; color: #908a7e;">
+      <div class="sk-coll-ft" style="padding: 30px 48px 60px; border-top: 1px solid #eceae5; display: flex; justify-content: space-between; align-items: center; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: 0.06em; color: #908a7e;">
         <span>© {{ year }} Stephan Kuenen · Köln</span>
         <span>{{ t.price }}</span>
       </div>
@@ -374,13 +428,13 @@
 
   <!-- ============ MODAL ============ -->
   <sc-if value="{{ sel }}" hint-placeholder-val="{{ null }}">
-    <div onClick="{{ closeModal }}" style="position: fixed; inset: 0; z-index: 90; background: rgba(15,14,12,0.7); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; padding: 48px;">
-      <div onClick="{{ stop }}" style="background: #fbfaf8; border-radius: 4px; max-width: 940px; width: 100%; max-height: 88vh; overflow: hidden; display: grid; grid-template-columns: 1.1fr 0.9fr; box-shadow: 0 30px 80px -20px rgba(0,0,0,0.6);">
-        <div style="background: #efece6; display: flex; align-items: center; justify-content: center; padding: 40px; position: relative;">
+    <div onClick="{{ closeModal }}" class="sk-modal-outer" style="position: fixed; inset: 0; z-index: 90; background: rgba(15,14,12,0.7); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; padding: 48px;">
+      <div onClick="{{ stop }}" class="sk-modal-inner" style="background: #fbfaf8; border-radius: 4px; max-width: 940px; width: 100%; max-height: 88vh; overflow: hidden; display: grid; grid-template-columns: 1.1fr 0.9fr; box-shadow: 0 30px 80px -20px rgba(0,0,0,0.6);">
+        <div class="sk-modal-img" style="background: #efece6; display: flex; align-items: center; justify-content: center; padding: 40px; position: relative;">
           <div style="{{ sel.bigStyle }}"></div>
           <span style="position: absolute; right: 10px; bottom: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 8px; color: rgba(255,255,255,0.4); letter-spacing: 0.04em; pointer-events: none;">© {{ year }} S. Kuenen</span>
         </div>
-        <div style="padding: 44px 40px; display: flex; flex-direction: column;">
+        <div class="sk-modal-info" style="padding: 44px 40px; display: flex; flex-direction: column;">
           <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px;">
             <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #8B0000;">{{ sel.themeLabel }}</span>
             <button onClick="{{ closeModal }}" style="background: none; border: none; font-size: 22px; line-height: 1; color: #908a7e; cursor: pointer;">×</button>
@@ -826,7 +880,7 @@ const STRINGS = {
 };
 
 class Component extends DCLogic {
-  state = { lang: 'de', filter: 'all', sel: null, inqRef: '', sent: false, submitting: false, view: 'home', collTheme: null, exhibSel: null };
+  state = { lang: 'de', filter: 'all', sel: null, inqRef: '', sent: false, submitting: false, view: 'home', collTheme: null, exhibSel: null, menuOpen: false };
   scrollers = {};
 
   componentDidMount() {
@@ -991,6 +1045,9 @@ class Component extends DCLogic {
       t, year: new Date().getFullYear(),
       lang,
       onLangChange: (e) => this.setLang(e.target.value),
+      menuOpen: !!this.state.menuOpen,
+      toggleMenu: () => this.setState({ menuOpen: !this.state.menuOpen }),
+      closeMenu: () => this.setState({ menuOpen: false }),
       themeCards, rows,
       exhibitions, exhibSel: this.state.exhibSel, closeExhib: () => this.setState({ exhibSel: null }),
       exhibSelStyle: this.state.exhibSel ? { width: '94vw', height: '90vh', background: "url('" + this.state.exhibSel + "') center/contain no-repeat" } : null,
