@@ -705,7 +705,7 @@ function buildWorks(){
   out.push({ id: 'M-167', theme: 'masters', title: 'Ai Weiwei', img: 'artworks/aiweiwei.jpg', dims: '', ratio: '1992/3040', artist: 'Ai Weiwei' });
   out.push({ id: 'M-168', theme: 'masters', title: 'Ohne Titel (2021)', img: 'artworks/untitled-sage-2021.jpg', dims: '', ratio: '1990/3110', tbd: true });
   out.push({ id: 'F-001', theme: 'koeln', title: 'Ohne Titel (2024)', img: 'artworks/portrait-braid-2024.jpg', dims: '', ratio: '692/914', noteDe: 'Ein stilles Frauenbildnis — eine junge Frau, die ihr langes Haar flicht. Freie Arbeit, Acryl auf Leinwand.', noteEn: 'A quiet portrait — a young woman braiding her long hair. A free work, acrylic on canvas.' });
-  out.push({ id: 'F-002', theme: 'koeln', title: 'Der Hai (2020)', img: 'artworks/der-hai-2020.jpg', dims: '', ratio: '611/623', noteDe: 'Ein Hai inmitten von Plastikmüll und leeren Verpackungen — eine freie Arbeit über Meer und Wegwerfgesellschaft.', noteEn: 'A shark amid plastic waste and empty packaging — a free work on the sea and our throwaway society.' });
+  out.push({ id: 'F-002', theme: 'koeln', title: 'Der Hai (2020)', img: 'artworks/der-hai-2020.jpg', dims: '', ratio: '611/623', reserved: true, noteDe: 'Ein Hai inmitten von Plastikmüll und leeren Verpackungen — eine freie Arbeit über Meer und Wegwerfgesellschaft.', noteEn: 'A shark amid plastic waste and empty packaging — a free work on the sea and our throwaway society.' });
   out.push({ id: 'F-003', theme: 'koeln', title: 'Die Kerze (2020)', img: 'artworks/die-kerze-2020.jpg', dims: '', ratio: '617/621', noteDe: '„Danke Gerhard“ — eine Kerze vor schwarzem Grund, gemalt als stilles Zeichen des Dankes und der Erinnerung.', noteEn: '“Danke Gerhard” — a candle against a black ground, painted as a quiet token of thanks and remembrance.' });
   out.push({ id: 'F-004', theme: 'koeln', title: 'Ohne Titel (2021)', img: 'artworks/freie-figur-2021.jpg', dims: '', ratio: '761/1018' });
   out.push({ id: 'D-001', theme: 'koeln', title: 'Kölner Dom (2026)', img: 'artworks/dom-2026.jpg', dims: '', ratio: '2308/3312' });
@@ -833,7 +833,7 @@ const STRINGS = {
     fName: 'Name', fEmail: 'E-Mail', fWork: 'Werknummer', fWorkPh: 'z. B. WF-014', fMsg: 'Nachricht',
     send: 'Anfrage senden', sending: 'Wird gesendet…',
     thanksTitle: 'Vielen Dank.', thanksSub: 'Ihre Anfrage ist eingegangen — ich melde mich in Kürze.',
-    mDims: 'Format', mMedium: 'Technik', mPrice: 'Preis', soldLabel: 'VERKAUFT', medium: 'Acryl auf Leinwand',
+    mDims: 'Format', mMedium: 'Technik', mPrice: 'Preis', soldLabel: 'VERKAUFT', reservedLabel: 'RESERVIERT', medium: 'Acryl auf Leinwand',
     inquireWork: 'Dieses Werk anfragen',
   },
   en: {
@@ -874,7 +874,7 @@ const STRINGS = {
     fName: 'Name', fEmail: 'Email', fWork: 'Work number', fWorkPh: 'e.g. WF-014', fMsg: 'Message',
     send: 'Send inquiry', sending: 'Sending…',
     thanksTitle: 'Thank you.', thanksSub: 'Your inquiry has been received — I will be in touch shortly.',
-    mDims: 'Size', mMedium: 'Medium', mPrice: 'Price', soldLabel: 'SOLD', medium: 'Acrylic on canvas',
+    mDims: 'Size', mMedium: 'Medium', mPrice: 'Price', soldLabel: 'SOLD', reservedLabel: 'RESERVED', medium: 'Acrylic on canvas',
     inquireWork: 'Inquire about this work',
   },
 };
@@ -926,9 +926,9 @@ class Component extends DCLogic {
       hasDims: !!w.dims,
       dimsLabel: w.dims ? t.mDims : '',
       onClick: () => this.setState({ sel: this.decorate(w, t) }),
-      priceLabel: w.sold ? t.soldLabel : t.price,
-      gridPriceStyle: { fontSize: w.sold ? '16px' : '12.5px', color: '#8B0000', marginTop: '3px', fontWeight: w.sold ? 800 : 400, letterSpacing: w.sold ? '0.05em' : 'normal' },
-      modalPriceStyle: { color: '#8B0000', fontWeight: w.sold ? 800 : 500, fontSize: w.sold ? '20px' : 'inherit' },
+      priceLabel: w.sold ? t.soldLabel : (w.reserved ? t.reservedLabel : t.price),
+      gridPriceStyle: { fontSize: (w.sold || w.reserved) ? '16px' : '12.5px', color: '#8B0000', marginTop: '3px', fontWeight: (w.sold || w.reserved) ? 800 : 400, letterSpacing: (w.sold || w.reserved) ? '0.05em' : 'normal' },
+      modalPriceStyle: { color: '#8B0000', fontWeight: (w.sold || w.reserved) ? 800 : 500, fontSize: (w.sold || w.reserved) ? '20px' : 'inherit' },
     };
   }
   workNote(w, t) {
