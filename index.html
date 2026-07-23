@@ -74,7 +74,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Spectral:ital@0;1&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; overflow-x: hidden; }
+  @supports (overflow: clip) { html { overflow-x: clip; } }
   body { margin: 0; background: #fbfaf8; }
   ::selection { background: #161412; color: #fff; }
   a { color: inherit; text-decoration: none; }
@@ -84,7 +85,7 @@
     .sk-nav { display: none !important; }
     .sk-hamburger { display: flex !important; }
     header { padding: 14px 20px !important; }
-    .sk-hero { grid-template-columns: 1fr !important; }
+    .sk-hero { grid-template-columns: minmax(0, 1fr) !important; }
     .sk-hero-img { min-height: 240px !important; }
     .sk-hero-text { padding: 40px 20px 36px !important; }
     .sk-h1 { font-size: 42px !important; line-height: 0.96 !important; }
@@ -94,19 +95,21 @@
     .sk-about-img { min-height: 280px !important; }
     .sk-sh { flex-direction: column !important; align-items: flex-start !important; gap: 4px !important; }
     .sk-rh { flex-direction: column !important; align-items: flex-start !important; gap: 6px !important; }
-    .sk-grid3 { grid-template-columns: 1fr !important; }
-    .sk-grid4 { grid-template-columns: repeat(2, 1fr) !important; }
-    .sk-about { grid-template-columns: 1fr !important; }
-    .sk-contact-grid { grid-template-columns: 1fr !important; gap: 28px !important; }
-    .sk-form-grid { grid-template-columns: 1fr !important; }
+    .sk-grid3 { grid-template-columns: minmax(0, 1fr) !important; }
+    .sk-grid4 { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+    .sk-about { grid-template-columns: minmax(0, 1fr) !important; }
+    .sk-contact-grid { grid-template-columns: minmax(0, 1fr) !important; gap: 28px !important; }
+    .sk-form-grid { grid-template-columns: minmax(0, 1fr) !important; }
     .sk-form-span2 { grid-column: span 1 !important; }
     footer { padding: 20px 20px !important; flex-direction: column !important; gap: 10px !important; }
     .sk-exhib-grid { grid-auto-rows: 150px !important; }
     .sk-modal-outer { padding: 0 !important; align-items: flex-end !important; }
-    .sk-modal-inner { grid-template-columns: 1fr !important; overflow-y: auto !important; max-height: 92vh !important; border-radius: 8px 8px 0 0 !important; }
+    .sk-modal-inner { grid-template-columns: minmax(0, 1fr) !important; overflow-y: auto !important; max-height: 92vh !important; border-radius: 8px 8px 0 0 !important; }
     .sk-modal-img { padding: 22px !important; min-height: 200px !important; }
     .sk-modal-info { padding: 22px 20px 28px !important; }
     .sk-coll-hdr { padding: 14px 20px !important; }
+    .sk-coll-hdr-right { gap: 12px !important; }
+    .sk-coll-back-txt { display: none; }
     .sk-coll-intro { padding: 28px 20px 14px !important; }
     .sk-coll-grid { padding: 10px 20px 44px !important; }
     .sk-coll-ft { padding: 18px 20px 36px !important; flex-direction: column !important; gap: 6px !important; }
@@ -388,8 +391,8 @@
           <span style="width: 2px; height: 22px; background: #161412; display: inline-block; border-radius: 1px;"></span>
           <span><span style="font-weight: 700; color: #161412; font-size: 21px;">S</span><span style="font-weight: 700; color: #161412; font-size: 21px;">T</span><span style="font-weight: 300; color: #161412;">ephan</span></span>
         </a>
-        <div style="display: flex; align-items: center; gap: 18px;">
-          <a href="#" onClick="{{ closeCollection }}" style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; color: #5c574e; text-decoration: none;">← {{ t.collBack }}</a>
+        <div class="sk-coll-hdr-right" style="display: flex; align-items: center; gap: 18px;">
+          <a href="#" onClick="{{ closeCollection }}" style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; color: #5c574e; text-decoration: none; white-space: nowrap;">← <span class="sk-coll-back-txt">{{ t.collBack }}</span></a>
           <div style="position: relative; display: inline-flex; align-items: center;">
             <select value="{{ lang }}" onChange="{{ onLangChange }}" style="appearance: none; -webkit-appearance: none; background: #fff; border: 1px solid #e0ddd6; border-radius: 999px; padding: 7px 30px 7px 15px; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: 0.08em; color: #161412; cursor: pointer; outline: none;">
               <option value="de">DE · Deutsch</option>
