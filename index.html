@@ -686,8 +686,8 @@ function buildWorks(){
   out.push({ id: 'M-154', theme: 'masters', title: 'Robert Rauschenberg', img: 'artworks/untitled-letters-2020.jpg', dims: '', ratio: '2039/3100', artist: 'Robert Rauschenberg' });
   out.push({ id: 'M-155', theme: 'masters', title: 'Adolph Menzel', img: 'artworks/untitled-pinkbald-2020.jpg', dims: '', ratio: '2055/3150', artist: 'Adolph Menzel' });
   out.push({ id: 'M-156', theme: 'masters', title: 'Joan Miró', img: 'artworks/untitled-miro-2020.jpg', dims: '', ratio: '2056/3080', artist: 'Joan Miró' });
-  out.push({ id: 'M-157', theme: 'masters', title: 'Ohne Titel (2021)', img: 'artworks/untitled-doubleportrait-2021.jpg', dims: '', ratio: '2330/1504', tbd: true });
-  out.push({ id: 'M-158', theme: 'masters', title: 'Ohne Titel (2021)', img: 'artworks/untitled-blondprofile-2021.jpg', dims: '', ratio: '2113/3105', tbd: true });
+  out.push({ id: 'M-157', theme: 'masters', title: 'Johannes Grützke', img: 'artworks/untitled-doubleportrait-2021.jpg', dims: '', ratio: '2330/1504', artist: 'Johannes Grützke', fit: 'contain' });
+  out.push({ id: 'M-158', theme: 'masters', title: 'Jean-Baptiste-Camille Corot', img: 'artworks/untitled-blondprofile-2021.jpg', dims: '', ratio: '2113/3105', artist: 'Jean-Baptiste-Camille Corot' });
   out.push({ id: 'M-159', theme: 'masters', title: 'Otto Modersohn', img: 'artworks/untitled-hattower-2020.jpg', dims: '', ratio: '2033/3075', artist: 'Otto Modersohn' });
   out.push({ id: 'M-160', theme: 'masters', title: 'William Turner', img: 'artworks/untitled-seascape-2021.jpg', dims: '', ratio: '1853/3040', artist: 'William Turner' });
   out.push({ id: 'M-161', theme: 'masters', title: 'Horst Janssen', img: 'artworks/untitled-aviator-2020.jpg', dims: '', ratio: '1915/3020', artist: 'Horst Janssen' });
@@ -854,6 +854,8 @@ const BLURBS = {
   'James Rosenquist': { de: 'Amerikanischer Pop-Maler aus der Reklameschilder-Werkstatt — riesige, hart beschnittene Bildfragmente aus Werbung und Warenwelt, montiert wie ein Plakat, das man zu nah betrachtet.', en: 'American Pop painter out of the billboard trade — vast, hard-cropped fragments of advertising and consumer imagery, assembled like a poster seen from too close.' },
   'Camille Claudel': { de: 'Französische Bildhauerin von eigenem Rang — „Der Walzer“ und „Das reife Alter“ in bewegtem Marmor und Bronze; Schülerin, Mitarbeiterin und Gefährtin Rodins, die letzten dreißig Jahre in der Anstalt, das Werk lange verschwiegen.', en: 'French sculptor of the first rank — “The Waltz” and “The Age of Maturity” in restless marble and bronze; Rodin’s pupil, collaborator and companion, her last thirty years spent in an asylum and her work long passed over in silence.' },
   'Georg Baselitz': { de: 'Deutscher Neo-Expressionist aus Sachsen — seit 1969 malt er seine Motive auf dem Kopf, damit das Bild als Malerei gesehen wird und nicht als Abbild; grobe, heftige Farbe und Adler, Bäume, Helden.', en: 'German Neo-Expressionist from Saxony — since 1969 he has painted his motifs upside down so the picture is seen as painting rather than likeness; coarse, vehement colour, eagles, trees and heroes.' },
+  'Johannes Grützke': { de: 'Berliner Maler der Figur — theatralische Gruppen, in denen sein eigenes Gesicht mehrfach auftaucht; Mitbegründer der „Schule der Neuen Prächtigkeit“ und Schöpfer des Panoramas in der Frankfurter Paulskirche.', en: 'Berlin painter of the figure — theatrical groups in which his own face appears again and again; co-founder of the “School of New Magnificence” and creator of the panorama in the Paulskirche in Frankfurt.' },
+  'Jean-Baptiste-Camille Corot': { de: 'Französischer Landschafter zwischen Klassik und Freilichtmalerei — silbriggraues Licht, zitternde Bäume und stille Figurenbilder; er ebnete den Impressionisten den Weg.', en: 'French landscape painter between classicism and plein air — silvery grey light, trembling trees and quiet figure pieces; he opened the way for the Impressionists.' },
   'El Greco': { de: 'Griechisch-spanischer Meister des Manierismus — langgestreckte Figuren, kühles Licht und glühende Farben; die spanische Halskrause vor tiefem Blau ist sein Zeichen.', en: 'Greek-Spanish master of Mannerism — elongated figures, cool light and glowing colour; the Spanish ruff against deep blue is his signature.' },
 };
 
@@ -978,7 +980,7 @@ class Component extends DCLogic {
   scrollContact() { if (this.contactEl) window.scrollTo({ top: this.contactEl.offsetTop - 10, behavior: 'smooth' }); }
 
   decorate(w, t) {
-    const swBg = w.img ? "#efece6 url('" + clImg(w.img, 600) + "') " + (w.pos || 'center') + "/cover no-repeat" : w.bg;
+    const swBg = w.img ? "#efece6 url('" + clImg(w.img, 600) + "') " + (w.pos || 'center') + '/' + (w.fit || 'cover') + " no-repeat" : w.bg;
     const bigBg = w.img ? "#efece6 url('" + clImg(w.img, 1400) + "') center/contain no-repeat" : w.bg;
     return {
       ...w,
