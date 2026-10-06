@@ -90,12 +90,14 @@
   .sk-ann-mat { padding: 14px; background: #f3ede0; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.12), inset 0 2px 6px rgba(0,0,0,0.25); }
   .sk-ann-mat img { box-shadow: 0 1px 3px rgba(0,0,0,0.25); }
   .sk-hero-slide { position: absolute; inset: 0; transition: opacity 1s ease-in-out; }
+  .sk-hero-img { --sk-hero-pad: 36px; }
   @media (max-width: 760px) {
     .sk-nav { display: none !important; }
     .sk-hamburger { display: flex !important; }
     header { padding: 14px 20px !important; }
     .sk-hero { grid-template-columns: minmax(0, 1fr) !important; }
-    .sk-hero-img { min-height: 240px !important; }
+    .sk-hero-img { min-height: 340px !important; }
+    .sk-hero-img { --sk-hero-pad: 18px; }
     .sk-ann-outer { padding: 12px !important; align-items: flex-end !important; }
     .sk-ann { grid-template-columns: minmax(0, 1fr) !important; gap: 22px !important; padding: 56px 22px 26px !important; max-height: 94vh; overflow-y: auto; }
     .sk-ann-frame { padding: 10px !important; max-width: 230px !important; margin: 0 auto; }
@@ -229,7 +231,7 @@
         <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: 0.12em; text-transform: uppercase; color: #908a7e;">{{ t.price }}</span>
       </div>
     </div>
-    <div class="sk-hero-img" style="min-height: 540px; background: #e7edee;">
+    <div class="sk-hero-img" style="min-height: 540px; background: #efece6;">
       <sc-for list="{{ heroSlides }}" as="hs" hint-placeholder-count="4">
         <div class="sk-hero-slide" style="{{ hs.style }}"></div>
       </sc-for>
@@ -781,13 +783,12 @@ const HERO_SLIDES = (() => {
   const free = WORKS.filter((w) => w.theme === 'koeln' && w.img);
   const fresh = free.filter((w) => w.img.indexOf('img/') === 0);
   const rest = free.filter((w) => w.img.indexOf('img/') !== 0);
-  const tall = (w) => { const [a, b] = String(w.ratio || '1/1').split('/').map(Number); return b > a * 1.05; };
   return [
-    { src: CL + '/f_auto,q_auto,w_1400/hero-abstract', pos: 'center' },
-    { src: 'img/vangogh3-2025.jpg', pos: 'center 35%' },
-  ].concat(fresh.concat(rest).map((w) => ({ src: clImg(w.img, 1400), pos: tall(w) ? 'center 35%' : 'center' })));
+    { src: CL + '/f_auto,q_auto,w_1400/hero-abstract', fit: 'cover' },
+    { src: 'img/vangogh3-2025.jpg', fit: 'contain' },
+  ].concat(fresh.concat(rest).map((w) => ({ src: clImg(w.img, 1400), fit: 'contain' })));
 })();
-const HERO_INTERVAL = 2000; // ms bis zum nächsten Bild (Überblendung 1 s)
+const HERO_INTERVAL = 4000; // ms bis zum nächsten Bild (Überblendung 1 s)
 
 // ---------- Ausstellungs-Banner ----------
 const BANNER_ID = 'rondorf-2026-11-08-v3';
@@ -1229,7 +1230,9 @@ class Component extends DCLogic {
         // nur aktuelles, vorheriges (blendet aus) und nächstes (lädt vor) Bild laden
         const n = HERO_SLIDES.length, cur = this.state.heroIdx;
         const near = i === cur || i === (cur + n - 1) % n || i === (cur + 1) % n;
-        return { style: { background: near ? "url('" + h.src + "') " + h.pos + '/cover no-repeat' : 'none', opacity: i === cur ? 1 : 0 } };
+        // das blaue Startbild füllt die Fläche, alle anderen werden ganz gezeigt (nicht beschnitten)
+        const full = h.fit === 'contain';
+        return { style: { background: near ? "url('" + h.src + "') center/" + h.fit + ' no-repeat' : 'none', opacity: i === cur ? 1 : 0, inset: full ? 'var(--sk-hero-pad)' : '0', filter: full ? 'drop-shadow(0 14px 22px rgba(0,0,0,0.22))' : 'none' } };
       }),
       themeCards, rows,
       exhibitions, exhibSel: this.state.exhibSel, closeExhib: () => this.setState({ exhibSel: null }),
