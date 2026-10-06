@@ -81,12 +81,16 @@
   a { color: inherit; text-decoration: none; }
   input, textarea, button { font-family: inherit; }
   .sk-hamburger { display: none; }
+  .sk-hero-img { position: relative; overflow: hidden; }
+  .sk-hero-slide { position: absolute; inset: 0; transition: opacity 1.4s ease-in-out; }
+  @media (prefers-reduced-motion: reduce) { .sk-hero-slide { transition: none; } }
   @media (max-width: 760px) {
     .sk-nav { display: none !important; }
     .sk-hamburger { display: flex !important; }
     header { padding: 14px 20px !important; }
     .sk-hero { grid-template-columns: minmax(0, 1fr) !important; }
     .sk-hero-img { min-height: 240px !important; }
+    .sk-banner { padding: 10px 44px 10px 20px !important; font-size: 13px !important; }
     .sk-hero-text { padding: 40px 20px 36px !important; }
     .sk-h1 { font-size: 42px !important; line-height: 0.96 !important; }
     .sk-wrap { padding-left: 20px !important; padding-right: 20px !important; }
@@ -118,6 +122,15 @@
 </helmet>
 
 <div style="font-family: 'Space Grotesk', sans-serif; color: #161412; background: #fbfaf8; position: relative;">
+
+  <!-- ============ AUSSTELLUNGS-BANNER ============ -->
+  <sc-if value="{{ bannerOpen }}" hint-placeholder-val="{{ false }}">
+    <div class="sk-banner" role="region" aria-label="{{ t.bannerLabel }}" style="position: relative; display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; padding: 11px 56px; background: #161412; color: #fbfaf8; font-size: 14px; line-height: 1.45; text-align: center;">
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: #c9c3b8;">{{ t.bannerKicker }}</span>
+      <span>{{ t.bannerText }}</span>
+      <button onClick="{{ closeBanner }}" aria-label="{{ t.bannerClose }}" style="position: absolute; right: 14px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #fbfaf8; font-size: 22px; line-height: 1; cursor: pointer; padding: 4px 8px; opacity: 0.8;" style-hover="opacity: 1;">×</button>
+    </div>
+  </sc-if>
 
   <!-- ============ HEADER ============ -->
   <header style="position: sticky; top: 0; z-index: 40; display: flex; align-items: center; justify-content: space-between; padding: 18px 56px; background: rgba(251,250,248,0.88); backdrop-filter: blur(10px); border-bottom: 1px solid #eceae5;">
@@ -190,7 +203,11 @@
         <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: 0.12em; text-transform: uppercase; color: #908a7e;">{{ t.price }}</span>
       </div>
     </div>
-    <div class="sk-hero-img" style="min-height: 540px; background: #e7edee url('https://res.cloudinary.com/dmm56rtb0/image/upload/f_auto,q_auto,w_1400/hero-abstract') center/cover no-repeat;"></div>
+    <div class="sk-hero-img" style="min-height: 540px; background: #e7edee;">
+      <sc-for list="{{ heroSlides }}" as="hs" hint-placeholder-count="4">
+        <div class="sk-hero-slide" style="{{ hs.style }}"></div>
+      </sc-for>
+    </div>
   </section>
 
   <!-- ============ SERIEN / THEMES ============ -->
@@ -466,6 +483,8 @@ const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xkoljddd';
 // ---------- Cloudinary ----------
 const CL = 'https://res.cloudinary.com/dmm56rtb0/image/upload';
 function clImg(path, w) {
+  // Images committed to the repo (img/…) are served directly, not via Cloudinary
+  if (path.indexOf('img/') === 0) return path;
   // Strip folder prefix and extension — Cloudinary public ID is just the filename
   const id = path.replace(/^.*\//, '').replace(/\.[^.]+$/, '');
   return CL + '/f_auto,q_auto,w_' + w + '/' + id;
@@ -542,7 +561,9 @@ function buildWorks(){
   out.push({ id: 'M-182', theme: 'masters', title: 'Pierre Bonnard (II)', img: 'artworks/untitled-ovalglasses-2020.jpg', dims: '', ratio: '2321/2938', artist: 'Pierre Bonnard' });
   out.push({ id: 'M-181', theme: 'masters', title: 'Joseph Beuys (II)', img: 'artworks/beuys2.jpg', dims: '', ratio: '2333/2985', artist: 'Joseph Beuys', noteDe: 'Der Filzhut und der Fettklumpen — dazu der Schriftzug „DAS IST KEINE BUTTER": eine Hommage an Beuys’ Materialmythos aus Fett und Filz und zugleich ein Augenzwinkern zu Magrittes „Ceci n’est pas une pipe".', noteEn: 'The felt hat and the lump of fat — with the words "DAS IST KEINE BUTTER" (this is not butter): a homage to Beuys’s material myth of fat and felt, and a wink at Magritte’s "Ceci n’est pas une pipe."' });
   out.push({ id: 'M-001', theme: 'masters', title: 'Thomas Baumgärtel', img: 'artworks/baumgaertel.jpg', dims: '28 × 35,8 cm', ratio: '31/40', artist: 'Thomas Baumgärtel' });
-  out.push({ id: 'M-066', theme: 'masters', title: 'Salvador Dalí', img: 'artworks/dali.jpg', dims: '', ratio: '4/5', artist: 'Salvador Dalí' });
+  out.push({ id: 'M-066', theme: 'masters', title: 'Salvador Dalí (I)', img: 'artworks/dali.jpg', dims: '', ratio: '4/5', artist: 'Salvador Dalí' });
+  out.push({ id: 'M-184', theme: 'masters', title: 'Salvador Dalí (II)', img: 'img/dali2-2025.jpg', dims: '', ratio: '2579/3327', artist: 'Salvador Dalí' });
+  out.push({ id: 'M-185', theme: 'masters', title: 'Ernst Ludwig Kirchner', img: 'img/kirchner-2026.jpg', dims: '', ratio: '2654/3289', artist: 'Ernst Ludwig Kirchner' });
   out.push({ id: 'M-003', theme: 'masters', title: 'Tsuguharu-Léonard Foujita', img: 'artworks/foujita_v2.jpg', dims: '30 × 40 cm', ratio: '3/4', artist: 'Tsuguharu-Léonard Foujita' });
   out.push({ id: 'M-004', theme: 'masters', title: 'Yayoi Kusama', img: 'artworks/kusama_v2.jpg', dims: '28 × 35,8 cm', ratio: '31/40', artist: 'Yayoi Kusama' });
   out.push({ id: 'M-005', theme: 'masters', title: 'Giuseppe Arcimboldo', img: 'artworks/arcimboldo_v2.jpg', dims: '30 × 40 cm', ratio: '3/4', artist: 'Giuseppe Arcimboldo' });
@@ -591,6 +612,7 @@ function buildWorks(){
   out.push({ id: 'M-048', theme: 'masters', title: 'Georges Braque', img: 'artworks/braque.jpg', dims: '28 × 35,8 cm', ratio: '31/40', artist: 'Georges Braque' });
   out.push({ id: 'M-049', theme: 'masters', title: 'Paul Cézanne', img: 'artworks/cezanne.jpg', dims: '30,8 × 46 cm', ratio: '308/460', artist: 'Paul Cézanne' });
   out.push({ id: 'M-050', theme: 'masters', title: 'Vincent van Gogh (II)', img: 'artworks/vangogh2.jpg', dims: '28 × 35,8 cm', ratio: '31/40', artist: 'Vincent van Gogh', priv: true });
+  out.push({ id: 'M-183', theme: 'masters', title: 'Vincent van Gogh (III)', img: 'img/vangogh3-2025.jpg', dims: '', ratio: '2769/3404', artist: 'Vincent van Gogh' });
   out.push({ id: 'M-051', theme: 'masters', title: 'Hans Holbein der Jüngere', img: 'artworks/holbein.jpg', dims: '28 × 35,8 cm', ratio: '31/40', artist: 'Hans Holbein der Jüngere' });
   out.push({ id: 'M-052', theme: 'masters', title: 'Stephan Kuenen — Selbstbildnis (II)', img: 'artworks/kuenen-self2.jpg', dims: '28 × 35,8 cm', ratio: '31/40', artist: 'Stephan Kuenen' });
   out.push({ id: 'M-053', theme: 'masters', title: 'Michelangelo Buonarroti', img: 'artworks/michelangelo.jpg', dims: '28 × 35,8 cm', ratio: '31/40', artist: 'Michelangelo Buonarroti' });
@@ -704,6 +726,15 @@ function buildWorks(){
   out.push({ id: 'F-004', theme: 'koeln', title: 'Ohne Titel (2021)', img: 'artworks/freie-figur-2021.jpg', dims: '', ratio: '761/1018' });
   out.push({ id: 'F-005', theme: 'koeln', title: 'Romain Rolland', img: 'artworks/untitled-letterhead-2024.jpg', dims: '', ratio: '2375/3167', noteDe: 'Bildnis des französischen Schriftstellers und Literaturnobelpreisträgers Romain Rolland — Pazifist und Humanist, der im Ersten Weltkrieg „über dem Getümmel“ für die Völkerverständigung eintrat. Eine freie Arbeit außerhalb der Serien.', noteEn: 'Portrait of the French writer and Nobel laureate in Literature Romain Rolland — a pacifist and humanist who, in the First World War, stood “above the battle” and pleaded for understanding between peoples. A free work outside the series.' });
   out.push({ id: 'F-006', theme: 'koeln', title: 'Ohne Titel (2020)', img: 'artworks/untitled-redbg-glasses-2020.jpg', dims: '', ratio: '2248/2998', noteDe: 'Bildnis eines indischen Nobelpreisträgers. Eine freie Arbeit außerhalb der Serien.', noteEn: 'Portrait of an Indian Nobel laureate. A free work outside the series.' });
+  out.push({ id: 'F-007', theme: 'koeln', title: 'Der Turban (2024)', img: 'img/portrait-turban-2024.jpg', dims: '', ratio: '2586/3435', noteDe: 'Bildnis eines bärtigen Mannes mit farbigem Turban vor türkisblauem Grund. Eine freie Arbeit außerhalb der Serien.', noteEn: 'Portrait of a bearded man in a colourful turban against a turquoise ground. A free work outside the series.' });
+  out.push({ id: 'F-008', theme: 'koeln', title: 'Profil in Blau (2025)', img: 'img/portrait-hat-2025.jpg', dims: '', ratio: '2596/3544', noteDe: 'Ein Mann mit schwarzem Hut und Krawatte im Profil vor leuchtend blauem Grund — das Gesicht in pastos aufgetragenen Rot- und Rosatönen aufgebrochen. Eine freie Arbeit außerhalb der Serien.', noteEn: 'A man in a black hat and tie, in profile against a bright blue ground — the face broken open in thickly applied reds and pinks. A free work outside the series.' });
+  out.push({ id: 'F-009', theme: 'koeln', title: 'Silberhaar (2026)', img: 'img/portrait-longhair-2026.jpg', dims: '', ratio: '2692/3644', noteDe: 'Ein Mann mit langem hellem Haar und Hut vor einem bewegten, farbig-abstrakten Grund. Eine freie Arbeit außerhalb der Serien.', noteEn: 'A man with long fair hair and a hat before a lively, colourful abstract ground. A free work outside the series.' });
+  out.push({ id: 'F-010', theme: 'koeln', title: 'Verschlungen (2026)', img: 'img/abstract-ring-2026.jpg', dims: '', ratio: '2772/2847', noteDe: 'Verschlungene Bögen in Grau-, Grün- und Sandtönen, von schwarzen Linien gefasst — eine abstrakte Komposition, in der sich ein Gesicht zu verbergen scheint. Eine freie Arbeit außerhalb der Serien.', noteEn: 'Intertwined arcs in greys, greens and sand tones, held by black lines — an abstract composition in which a face seems to hide. A free work outside the series.' });
+  out.push({ id: 'F-011', theme: 'koeln', title: 'Zwei Frauen (2026)', img: 'img/zwei-frauen-2026.jpg', dims: '', ratio: '2778/2732', noteDe: 'Zwei junge Frauen nebeneinander vor ruhigem grauem Grund — die eine in Rot und Weiß mit geschnürtem Mieder, die andere in Grün mit hochgestecktem rotblondem Haar. Eine freie Arbeit außerhalb der Serien.', noteEn: 'Two young women side by side against a calm grey ground — one in red and white with a laced bodice, the other in green with pinned-up strawberry-blond hair. A free work outside the series.' });
+  out.push({ id: 'F-012', theme: 'koeln', title: 'Vier Kerzen (2026)', img: 'img/vier-kerzen-2026.jpg', dims: '', ratio: '3467/2139', noteDe: 'Vier schlanke, brennende Kerzen in einer Reihe vor ruhigem, sandfarbenem Grund — ein stilles Bild über Licht und Zeit. Eine freie Arbeit außerhalb der Serien.', noteEn: 'Four slender lit candles in a row against a calm, sand-coloured ground — a quiet picture about light and time. A free work outside the series.' });
+  out.push({ id: 'F-013', theme: 'koeln', title: 'Einstein (2005)', img: 'img/einstein-2005.jpg', dims: '', ratio: '2312/3532', noteDe: 'Albert Einstein mit herausgestreckter Zunge — übermalt und umspielt von kindlichen Zeichnungen, lachenden Sonnen, Namen, Schriftzügen und kleinen Rechnungen. Ein heiteres Bild über Neugier und Fantasie. Eine freie Arbeit außerhalb der Serien.', noteEn: 'Albert Einstein sticking out his tongue — painted over and surrounded by childlike drawings, laughing suns, names, scribbled words and little sums. A cheerful picture about curiosity and imagination. A free work outside the series.' });
+  out.push({ id: 'F-014', theme: 'koeln', title: 'Elefant und Frosch', img: 'img/elefant-frosch.jpg', dims: '', ratio: '2590/2641', noteDe: 'Ein junges Elefantenkind, pastos und wie verwischt, vor rostrotem Boden und blassblauem Himmel — vom linken Rand winkt ein grüner Frosch herein. Eine freie Arbeit außerhalb der Serien.', noteEn: 'A young elephant calf, thickly painted and as if blurred, against rust-red ground and pale blue sky — a green frog waves in from the left edge. A free work outside the series.' });
+  out.push({ id: 'F-015', theme: 'koeln', title: 'Unter Strom', img: 'img/unter-strom.jpg', dims: '', ratio: '3654/2600', noteDe: 'Eine Malerin vollendet ein Bildnis im Stil der alten Meister — umgeben von Platinen, Lüfter, Steckdosen und Kabelsträngen, die aus dem Porträt herauswachsen. Alte Kunst trifft Technik; signiert mit „KUeNenST“. Eine freie Arbeit außerhalb der Serien.', noteEn: 'A woman painter finishes a portrait in the manner of the old masters — surrounded by circuit boards, a fan, sockets and bundles of cable growing out of the portrait. Old art meets technology; signed “KUeNenST”. A free work outside the series.' });
   out.push({ id: 'D-001', theme: 'koeln', title: 'Kölner Dom (2026)', img: 'artworks/dom-2026.jpg', dims: '', ratio: '2308/3312' });
   out.push({ id: 'D-002', theme: 'koeln', title: 'Kölner Dom (2025)', img: 'artworks/dom-2025.jpg', dims: '', ratio: '1872/3817' });
   out.push({ id: 'A-001', theme: 'koeln', title: 'Lebensraum (2023)', img: 'artworks/lebensraum-2023.jpg', dims: '', ratio: '2405/3375', noteDe: 'Mischtechnik auf rostiger Eisenfläche. Ein Leguan vor verwitterten Schichten, dazu das Wort „LEBENSRAUM“ in Blattgold — eine Meditation über Raum, Natur und Vergänglichkeit.', noteEn: 'Mixed media on a rusted iron surface. An iguana before weathered layers, with the word "LEBENSRAUM" (habitat) in gold leaf — a meditation on space, nature and transience.' });
@@ -713,6 +744,20 @@ function buildWorks(){
   return out;
 }
 const WORKS = buildWorks();
+
+// ---------- Startseite: wechselnde Bilder oben rechts ----------
+const HERO_SLIDES = [
+  { src: CL + '/f_auto,q_auto,w_1400/hero-abstract', pos: 'center' },
+  { src: 'img/vangogh3-2025.jpg', pos: 'center 35%' },
+  { src: 'img/abstract-ring-2026.jpg', pos: 'center' },
+  { src: 'img/portrait-longhair-2026.jpg', pos: 'center 35%' },
+  { src: 'img/portrait-turban-2024.jpg', pos: 'center 30%' },
+];
+const HERO_INTERVAL = 2000; // ms, die das Bild steht, bevor das nächste überblendet
+
+// ---------- Ausstellungs-Banner ----------
+const BANNER_ID = 'rondorf-2026-11-08';
+const BANNER_UNTIL = new Date('2026-11-08T23:59:59+01:00');
 const MASTERS_COUNT = WORKS.filter((w) => w.theme === 'masters').length;
 
 // ---------- artist style blurbs ----------
@@ -773,6 +818,7 @@ const BLURBS = {
   'Peter Paul Rubens': { de: 'Meister des flämischen Barock — sinnliche Fülle, dramatische Bewegung und leuchtendes Inkarnat.', en: 'Master of the Flemish Baroque — sensual abundance, dramatic movement and luminous flesh.' },
   'Carl Spitzweg': { de: 'Deutscher Maler des Biedermeier — humorvolle, liebevoll beobachtete Szenen kleinstädtischen Lebens.', en: 'German painter of the Biedermeier — humorous, lovingly observed scenes of small-town life.' },
   'Andy Warhol': { de: 'Pionier der Pop Art — Siebdrucke von Suppendosen und Stars, schillernde Farben und die Ikone als Massenware.', en: 'Pioneer of Pop art — silkscreens of soup cans and stars, dazzling colour and the icon as mass commodity.' },
+  'Ernst Ludwig Kirchner': { de: 'Deutscher Expressionist und Mitbegründer der „Brücke“ — kantige Formen, grelle Farben und nervöse Großstadtszenen; später in den Schweizer Bergen.', en: 'German Expressionist and co-founder of Die Brücke — angular forms, strident colour and restless city scenes; later in the Swiss mountains.' },
   'Salvador Dalí': { de: 'Meister des Surrealismus — traumhafte, paranoisch-kritische Bildwelten, gewundene Schnurrbart-Ikone und schmelzende Uhren.', en: 'Master of Surrealism — dreamlike, paranoiac-critical worlds, the iconic curled moustache and melting clocks.' },
   'Piet Mondrian': { de: 'Niederländischer Mitbegründer von De Stijl — reduzierte die Malerei auf schwarze Raster und die Grundfarben Rot, Gelb und Blau.', en: 'Dutch co-founder of De Stijl — reduced painting to black grids and the primary colours red, yellow and blue.' },
   'René Magritte': { de: 'Belgischer Surrealist — Bowler-Hüte, schwebende Äpfel und das Spiel von Bild und Wirklichkeit: „Ceci n’est pas une pipe."', en: 'Belgian Surrealist — bowler hats, floating apples and the play of image and reality: "Ceci n’est pas une pipe."' },
@@ -872,6 +918,8 @@ const STRINGS = {
   de: {
     roleLine: 'Maler · Köln', price: 'Preis auf Anfrage',
     navWork: 'Werk', navSeries: 'Serien', navAbout: 'Über', navExhib: 'Ausstellungen', navContact: 'Kontakt',
+    bannerLabel: 'Ausstellungshinweis', bannerKicker: 'Ausstellung', bannerClose: 'Hinweis schließen',
+    bannerText: 'Kulturkirche Rondorf · Sonntag, 8. November, 17 Uhr · Eintritt frei',
     exhibTitle: 'Ausstellungen', exhibKicker: 'Vor Ort', exhibSub: 'Impressionen aus Ausstellungen und Vernissagen — die Werke im Raum.',
     hero1: 'Rahmenlos —', hero2: 'Einblicke in die Kunst',
     heroSub: 'Stephan Kuenen, Maler aus Köln. Geworfene Linien, reine Form — eine lebenslange Auseinandersetzung mit der Farbe.',
@@ -913,6 +961,8 @@ const STRINGS = {
   en: {
     roleLine: 'Painter · Cologne', price: 'Price on request',
     navWork: 'Work', navSeries: 'Series', navAbout: 'About', navExhib: 'Exhibitions', navContact: 'Contact',
+    bannerLabel: 'Exhibition notice', bannerKicker: 'Exhibition', bannerClose: 'Close notice',
+    bannerText: 'Kulturkirche Rondorf · Sunday, 8 November, 5 pm · Free entry',
     exhibTitle: 'Exhibitions', exhibKicker: 'On site', exhibSub: 'Impressions from exhibitions and openings — the works in the room.',
     hero1: 'Frameless —', hero2: 'Insights into art',
     heroSub: 'Stephan Kuenen, a painter from Cologne. Thrown lines, pure form — a lifelong conversation with colour.',
@@ -954,16 +1004,32 @@ const STRINGS = {
 };
 
 class Component extends DCLogic {
-  state = { lang: 'de', filter: 'all', sel: null, inqRef: '', sent: false, submitting: false, view: 'home', collTheme: null, exhibSel: null, menuOpen: false };
+  state = { lang: 'de', filter: 'all', sel: null, inqRef: '', sent: false, submitting: false, view: 'home', collTheme: null, exhibSel: null, menuOpen: false, heroIdx: 0, bannerOpen: false };
   scrollers = {};
 
   componentDidMount() {
     try { const l = localStorage.getItem('sk_lang'); if (l === 'de' || l === 'en') this.setState({ lang: l }); } catch (e) {}
+    let bannerClosed = false;
+    try { bannerClosed = localStorage.getItem('sk_banner_closed') === BANNER_ID; } catch (e) {}
+    if (!bannerClosed && new Date() <= BANNER_UNTIL) this.setState({ bannerOpen: true });
+    let reduce = false;
+    try { reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+    if (!reduce) {
+      // 2 s stehen lassen, dann 1,4 s überblenden
+      this._heroTimer = setInterval(() => this.setState({ heroIdx: (this.state.heroIdx + 1) % HERO_SLIDES.length }), HERO_INTERVAL + 1400);
+    }
     this.syncHash();
     this._hashHandler = () => this.syncHash();
     window.addEventListener('hashchange', this._hashHandler);
   }
-  componentWillUnmount() { if (this._hashHandler) window.removeEventListener('hashchange', this._hashHandler); }
+  componentWillUnmount() {
+    if (this._hashHandler) window.removeEventListener('hashchange', this._hashHandler);
+    if (this._heroTimer) clearInterval(this._heroTimer);
+  }
+  closeBanner = () => {
+    try { localStorage.setItem('sk_banner_closed', BANNER_ID); } catch (e) {}
+    this.setState({ bannerOpen: false });
+  };
   syncHash() {
     const m = (typeof location !== 'undefined' ? (location.hash || '') : '').match(/collection=([a-z]+)/i);
     if (m && ['wandflicken', 'masters', 'koeln'].includes(m[1])) {
@@ -1122,6 +1188,8 @@ class Component extends DCLogic {
       menuOpen: !!this.state.menuOpen,
       toggleMenu: () => this.setState({ menuOpen: !this.state.menuOpen }),
       closeMenu: () => this.setState({ menuOpen: false }),
+      bannerOpen: !!this.state.bannerOpen, closeBanner: this.closeBanner,
+      heroSlides: HERO_SLIDES.map((h, i) => ({ style: { background: "url('" + h.src + "') " + h.pos + '/cover no-repeat', opacity: i === this.state.heroIdx ? 1 : 0 } })),
       themeCards, rows,
       exhibitions, exhibSel: this.state.exhibSel, closeExhib: () => this.setState({ exhibSel: null }),
       exhibSelStyle: this.state.exhibSel ? { width: '94vw', height: '90vh', background: "url('" + this.state.exhibSel + "') center/contain no-repeat" } : null,
