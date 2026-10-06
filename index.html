@@ -82,15 +82,25 @@
   input, textarea, button { font-family: inherit; }
   .sk-hamburger { display: none; }
   .sk-hero-img { position: relative; overflow: hidden; }
-  .sk-hero-slide { position: absolute; inset: 0; transition: opacity 1.4s ease-in-out; }
-  @media (prefers-reduced-motion: reduce) { .sk-hero-slide { transition: none; } }
+  .sk-ann-outer { animation: skAnnFade .5s ease-out both; }
+  .sk-ann { animation: skAnnRise .6s cubic-bezier(.2,.7,.2,1) both; }
+  @keyframes skAnnFade { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes skAnnRise { from { opacity: 0; transform: translateY(18px) scale(.98); } to { opacity: 1; transform: none; } }
+  .sk-ann-frame { padding: 16px; border-radius: 2px; background: linear-gradient(135deg, #7a5a17 0%, #e8cd78 22%, #a9832a 45%, #f4df93 64%, #8d6a1d 85%, #d9b75c 100%); box-shadow: 0 22px 44px -16px rgba(0,0,0,0.75), inset 0 0 0 1px rgba(255,240,190,0.45), inset 0 0 0 4px rgba(122,90,23,0.55), inset 0 0 10px rgba(0,0,0,0.35); }
+  .sk-ann-mat { padding: 14px; background: #f3ede0; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.12), inset 0 2px 6px rgba(0,0,0,0.25); }
+  .sk-ann-mat img { box-shadow: 0 1px 3px rgba(0,0,0,0.25); }
+  .sk-hero-slide { position: absolute; inset: 0; transition: opacity 1s ease-in-out; }
   @media (max-width: 760px) {
     .sk-nav { display: none !important; }
     .sk-hamburger { display: flex !important; }
     header { padding: 14px 20px !important; }
     .sk-hero { grid-template-columns: minmax(0, 1fr) !important; }
     .sk-hero-img { min-height: 240px !important; }
-    .sk-banner { padding: 10px 44px 10px 20px !important; font-size: 13px !important; }
+    .sk-ann-outer { padding: 12px !important; align-items: flex-end !important; }
+    .sk-ann { grid-template-columns: minmax(0, 1fr) !important; gap: 22px !important; padding: 56px 22px 26px !important; max-height: 94vh; overflow-y: auto; }
+    .sk-ann-frame { padding: 10px !important; max-width: 300px; margin: 0 auto; width: 100%; }
+    .sk-ann-mat { padding: 8px !important; }
+    .sk-ann-title { font-size: 32px !important; }
     .sk-hero-text { padding: 40px 20px 36px !important; }
     .sk-h1 { font-size: 42px !important; line-height: 0.96 !important; }
     .sk-wrap { padding-left: 20px !important; padding-right: 20px !important; }
@@ -123,12 +133,28 @@
 
 <div style="font-family: 'Space Grotesk', sans-serif; color: #161412; background: #fbfaf8; position: relative;">
 
-  <!-- ============ AUSSTELLUNGS-BANNER ============ -->
+  <!-- ============ AUSSTELLUNGS-HINWEIS ============ -->
   <sc-if value="{{ bannerOpen }}" hint-placeholder-val="{{ false }}">
-    <div class="sk-banner" role="region" aria-label="{{ t.bannerLabel }}" style="position: relative; display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; padding: 11px 56px; background: #161412; color: #fbfaf8; font-size: 14px; line-height: 1.45; text-align: center;">
-      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: #c9c3b8;">{{ t.bannerKicker }}</span>
-      <span>{{ t.bannerText }}</span>
-      <button onClick="{{ closeBanner }}" aria-label="{{ t.bannerClose }}" style="position: absolute; right: 14px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #fbfaf8; font-size: 22px; line-height: 1; cursor: pointer; padding: 4px 8px; opacity: 0.8;" style-hover="opacity: 1;">×</button>
+    <div class="sk-ann-outer" onClick="{{ closeBanner }}" style="position: fixed; inset: 0; z-index: 60; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(22,20,18,0.55); backdrop-filter: blur(3px);">
+      <div class="sk-ann" role="dialog" aria-modal="true" aria-label="{{ t.bannerLabel }}" onClick="{{ stop }}" style="position: relative; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); align-items: center; gap: 44px; width: 100%; max-width: 980px; padding: 48px 52px; background: #1b1815; color: #fbfaf8; border-radius: 4px; box-shadow: 0 40px 90px -30px rgba(0,0,0,0.7); border: 1px solid rgba(214,180,94,0.35);">
+        <button onClick="{{ closeBanner }}" aria-label="{{ t.bannerClose }}" style="position: absolute; top: 12px; right: 12px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.08); border: none; border-radius: 50%; color: #fbfaf8; font-size: 26px; line-height: 1; cursor: pointer;" style-hover="background: rgba(255,255,255,0.18);">×</button>
+        <div class="sk-ann-frame">
+          <div class="sk-ann-mat">
+            <img src="img/vier-kerzen-2026.jpg" alt="{{ t.bannerImgAlt }}" style="display: block; width: 100%; height: auto;" />
+          </div>
+        </div>
+        <div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.24em; text-transform: uppercase; color: #d6b45e; margin-bottom: 18px;">{{ t.bannerKicker }}</div>
+          <div class="sk-ann-title" style="font-weight: 700; font-size: 44px; line-height: 1.02; letter-spacing: -0.025em; margin: 0 0 18px;">Kulturkirche Rondorf</div>
+          <div style="font-family: 'Spectral', serif; font-style: italic; font-size: 19px; line-height: 1.5; color: #d9d3c7; margin-bottom: 24px;">{{ t.bannerLead }}</div>
+          <div style="font-size: 20px; font-weight: 500; line-height: 1.45; margin-bottom: 6px;">{{ t.bannerDate }}</div>
+          <div style="font-size: 20px; font-weight: 500; line-height: 1.45; margin-bottom: 22px;">{{ t.bannerTime }}</div>
+          <span style="display: inline-block; padding: 7px 16px; border: 1px solid #d6b45e; border-radius: 999px; color: #d6b45e; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase;">{{ t.bannerFree }}</span>
+          <div style="margin-top: 32px;">
+            <button onClick="{{ closeBanner }}" style="background: #d6b45e; color: #161412; border: none; padding: 13px 28px; border-radius: 2px; font-size: 14px; font-weight: 600; letter-spacing: 0.03em; cursor: pointer;" style-hover="background: #e6c877;">{{ t.bannerOk }}</button>
+          </div>
+        </div>
+      </div>
     </div>
   </sc-if>
 
@@ -746,17 +772,22 @@ function buildWorks(){
 const WORKS = buildWorks();
 
 // ---------- Startseite: wechselnde Bilder oben rechts ----------
-const HERO_SLIDES = [
-  { src: CL + '/f_auto,q_auto,w_1400/hero-abstract', pos: 'center' },
-  { src: 'img/vangogh3-2025.jpg', pos: 'center 35%' },
-  { src: 'img/abstract-ring-2026.jpg', pos: 'center' },
-  { src: 'img/portrait-longhair-2026.jpg', pos: 'center 35%' },
-  { src: 'img/portrait-turban-2024.jpg', pos: 'center 30%' },
-];
-const HERO_INTERVAL = 2000; // ms, die das Bild steht, bevor das nächste überblendet
+// Beginnt immer mit dem blauen Bild, dann Van Gogh, dann alle Freien Werke
+// (neue zuerst) — läuft endlos im Kreis.
+const HERO_SLIDES = (() => {
+  const free = WORKS.filter((w) => w.theme === 'koeln' && w.img);
+  const fresh = free.filter((w) => w.img.indexOf('img/') === 0);
+  const rest = free.filter((w) => w.img.indexOf('img/') !== 0);
+  const tall = (w) => { const [a, b] = String(w.ratio || '1/1').split('/').map(Number); return b > a * 1.05; };
+  return [
+    { src: CL + '/f_auto,q_auto,w_1400/hero-abstract', pos: 'center' },
+    { src: 'img/vangogh3-2025.jpg', pos: 'center 35%' },
+  ].concat(fresh.concat(rest).map((w) => ({ src: clImg(w.img, 1400), pos: tall(w) ? 'center 35%' : 'center' })));
+})();
+const HERO_INTERVAL = 2000; // ms bis zum nächsten Bild (Überblendung 1 s)
 
 // ---------- Ausstellungs-Banner ----------
-const BANNER_ID = 'rondorf-2026-11-08';
+const BANNER_ID = 'rondorf-2026-11-08-v2';
 const BANNER_UNTIL = new Date('2026-11-08T23:59:59+01:00');
 const MASTERS_COUNT = WORKS.filter((w) => w.theme === 'masters').length;
 
@@ -919,7 +950,9 @@ const STRINGS = {
     roleLine: 'Maler · Köln', price: 'Preis auf Anfrage',
     navWork: 'Werk', navSeries: 'Serien', navAbout: 'Über', navExhib: 'Ausstellungen', navContact: 'Kontakt',
     bannerLabel: 'Ausstellungshinweis', bannerKicker: 'Ausstellung', bannerClose: 'Hinweis schließen',
-    bannerText: 'Kulturkirche Rondorf · Sonntag, 8. November, 17 Uhr · Eintritt frei',
+    bannerLead: 'Herzliche Einladung zur Ausstellung von Stephan Kuenen.',
+    bannerDate: 'Sonntag, 8. November 2026', bannerTime: '17 Uhr', bannerFree: 'Eintritt frei', bannerOk: 'Schließen',
+    bannerImgAlt: 'Vier Kerzen — Gemälde von Stephan Kuenen im goldenen Rahmen',
     exhibTitle: 'Ausstellungen', exhibKicker: 'Vor Ort', exhibSub: 'Impressionen aus Ausstellungen und Vernissagen — die Werke im Raum.',
     hero1: 'Rahmenlos —', hero2: 'Einblicke in die Kunst',
     heroSub: 'Stephan Kuenen, Maler aus Köln. Geworfene Linien, reine Form — eine lebenslange Auseinandersetzung mit der Farbe.',
@@ -962,7 +995,9 @@ const STRINGS = {
     roleLine: 'Painter · Cologne', price: 'Price on request',
     navWork: 'Work', navSeries: 'Series', navAbout: 'About', navExhib: 'Exhibitions', navContact: 'Contact',
     bannerLabel: 'Exhibition notice', bannerKicker: 'Exhibition', bannerClose: 'Close notice',
-    bannerText: 'Kulturkirche Rondorf · Sunday, 8 November, 5 pm · Free entry',
+    bannerLead: 'You are warmly invited to an exhibition by Stephan Kuenen.',
+    bannerDate: 'Sunday, 8 November 2026', bannerTime: '5 pm', bannerFree: 'Free entry', bannerOk: 'Close',
+    bannerImgAlt: 'Four Candles — painting by Stephan Kuenen in a gilded frame',
     exhibTitle: 'Exhibitions', exhibKicker: 'On site', exhibSub: 'Impressions from exhibitions and openings — the works in the room.',
     hero1: 'Frameless —', hero2: 'Insights into art',
     heroSub: 'Stephan Kuenen, a painter from Cologne. Thrown lines, pure form — a lifelong conversation with colour.',
@@ -1012,12 +1047,9 @@ class Component extends DCLogic {
     let bannerClosed = false;
     try { bannerClosed = localStorage.getItem('sk_banner_closed') === BANNER_ID; } catch (e) {}
     if (!bannerClosed && new Date() <= BANNER_UNTIL) this.setState({ bannerOpen: true });
-    let reduce = false;
-    try { reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
-    if (!reduce) {
-      // 2 s stehen lassen, dann 1,4 s überblenden
-      this._heroTimer = setInterval(() => this.setState({ heroIdx: (this.state.heroIdx + 1) % HERO_SLIDES.length }), HERO_INTERVAL + 1400);
-    }
+    this._escHandler = (e) => { if (e.key === 'Escape' && this.state.bannerOpen) this.closeBanner(); };
+    window.addEventListener('keydown', this._escHandler);
+    this._heroTimer = setInterval(() => this.setState({ heroIdx: (this.state.heroIdx + 1) % HERO_SLIDES.length }), HERO_INTERVAL);
     this.syncHash();
     this._hashHandler = () => this.syncHash();
     window.addEventListener('hashchange', this._hashHandler);
@@ -1025,6 +1057,7 @@ class Component extends DCLogic {
   componentWillUnmount() {
     if (this._hashHandler) window.removeEventListener('hashchange', this._hashHandler);
     if (this._heroTimer) clearInterval(this._heroTimer);
+    if (this._escHandler) window.removeEventListener('keydown', this._escHandler);
   }
   closeBanner = () => {
     try { localStorage.setItem('sk_banner_closed', BANNER_ID); } catch (e) {}
@@ -1189,7 +1222,12 @@ class Component extends DCLogic {
       toggleMenu: () => this.setState({ menuOpen: !this.state.menuOpen }),
       closeMenu: () => this.setState({ menuOpen: false }),
       bannerOpen: !!this.state.bannerOpen, closeBanner: this.closeBanner,
-      heroSlides: HERO_SLIDES.map((h, i) => ({ style: { background: "url('" + h.src + "') " + h.pos + '/cover no-repeat', opacity: i === this.state.heroIdx ? 1 : 0 } })),
+      heroSlides: HERO_SLIDES.map((h, i) => {
+        // nur aktuelles, vorheriges (blendet aus) und nächstes (lädt vor) Bild laden
+        const n = HERO_SLIDES.length, cur = this.state.heroIdx;
+        const near = i === cur || i === (cur + n - 1) % n || i === (cur + 1) % n;
+        return { style: { background: near ? "url('" + h.src + "') " + h.pos + '/cover no-repeat' : 'none', opacity: i === cur ? 1 : 0 } };
+      }),
       themeCards, rows,
       exhibitions, exhibSel: this.state.exhibSel, closeExhib: () => this.setState({ exhibSel: null }),
       exhibSelStyle: this.state.exhibSel ? { width: '94vw', height: '90vh', background: "url('" + this.state.exhibSel + "') center/contain no-repeat" } : null,
