@@ -777,6 +777,7 @@ function buildWorks(){
   out.push({ id: 'F-026', theme: 'koeln', title: 'Im Becken (2020)', img: 'img/im-becken-2020.jpg', dims: '', ratio: '2724/3336', noteDe: 'Ein Hai und zwei Goldfische schweben vor leuchtend orangefarbenen und blassgrünen Flächen — oben paddeln Entenfüße, ein gefleckter Frosch klettert ins Bild, unten kriecht ein Molch, rechts laufen Wasserrohre. Ein heiter-rätselhaftes Aquarium. Eine freie Arbeit außerhalb der Serien.', noteEn: 'A shark and two goldfish float before glowing orange and pale green fields — duck feet paddle at the top, a spotted frog climbs into the picture, a newt crawls along the bottom and water pipes run down the right. A cheerful, puzzling aquarium. A free work outside the series.' });
   out.push({ id: 'F-027', theme: 'koeln', title: 'Unter Druck (2024)', img: 'img/unter-druck-2024.jpg', dims: '', ratio: '2516/3756', noteDe: 'Ein rohes Ei, behutsam in einen Schraubstock gespannt, auf einer alten Hobelbank — darunter lehnt ein Vorschlaghammer. Ein stilles Bild über Zerbrechlichkeit und Spannung. Eine freie Arbeit außerhalb der Serien.', noteEn: 'A raw egg, carefully clamped in a vice on an old workbench — a sledgehammer leans below. A quiet picture about fragility and tension. A free work outside the series.' });
   out.push({ id: 'F-028', theme: 'koeln', title: 'Von oben (2025)', img: 'img/von-oben-2025.jpg', dims: '', ratio: '2637/2633', noteDe: 'Der Blick senkrecht von oben in eine kleine Wohnung — Küche mit Pfannen und Herd, Deckenventilator, ein gedeckter runder Tisch mit Birnen, Bad und zwei grüne Türen. Der Alltag wie ein liebevoll gezeichneter Grundriss. Eine freie Arbeit außerhalb der Serien.', noteEn: 'Looking straight down into a small flat — a kitchen with pans and stove, a ceiling fan, a laid round table with pears, a bathroom and two green doors. Everyday life as a lovingly drawn floor plan. A free work outside the series.' });
+  out.push({ id: 'F-029', theme: 'koeln', title: 'Sonne der Anden (2026)', img: 'img/sonne-der-anden-2026.jpg', dims: '', ratio: '2694/3288', noteDe: 'Eine große goldene Sonne, umringt von farbigen Kondoren, Echsen, Vögeln und Fabelwesen in der Bildsprache der alten Andenkulturen — oben ziehen graue Lamas, unten wogen blaue Bergwellen. Eine freie Arbeit außerhalb der Serien.', noteEn: 'A great golden sun, ringed by colourful condors, lizards, birds and mythical creatures in the visual language of the ancient Andean cultures — grey llamas file across the sky and blue mountain waves roll below. A free work outside the series.' });
   out.push({ id: 'D-001', theme: 'koeln', title: 'Kölner Dom (2026)', img: 'artworks/dom-2026.jpg', dims: '', ratio: '2308/3312' });
   out.push({ id: 'D-002', theme: 'koeln', title: 'Kölner Dom (2025)', img: 'artworks/dom-2025.jpg', dims: '', ratio: '1872/3817' });
   out.push({ id: 'A-001', theme: 'koeln', title: 'Lebensraum (2023)', img: 'artworks/lebensraum-2023.jpg', dims: '', ratio: '2405/3375', noteDe: 'Mischtechnik auf rostiger Eisenfläche. Ein Leguan vor verwitterten Schichten, dazu das Wort „LEBENSRAUM“ in Blattgold — eine Meditation über Raum, Natur und Vergänglichkeit.', noteEn: 'Mixed media on a rusted iron surface. An iguana before weathered layers, with the word "LEBENSRAUM" (habitat) in gold leaf — a meditation on space, nature and transience.' });
@@ -788,15 +789,17 @@ function buildWorks(){
 const WORKS = buildWorks();
 
 // ---------- Startseite: wechselnde Bilder oben rechts ----------
-// Beginnt immer mit dem blauen Bild, dann Van Gogh, dann alle Freien Werke
+// Beginnt immer mit dem blauen Bild, dann Van Gogh und Sonne der Anden, dann alle Freien Werke
 // (neue zuerst) — läuft endlos im Kreis.
 const HERO_SLIDES = (() => {
-  const free = WORKS.filter((w) => w.theme === 'koeln' && w.img);
+  const pinned = ['img/vangogh3-2025.jpg', 'img/sonne-der-anden-2026.jpg'];
+  const free = WORKS.filter((w) => w.theme === 'koeln' && w.img && pinned.indexOf(w.img) < 0);
   const fresh = free.filter((w) => w.img.indexOf('img/') === 0);
   const rest = free.filter((w) => w.img.indexOf('img/') !== 0);
   return [
     { src: CL + '/f_auto,q_auto,w_1400/hero-abstract', fit: 'cover' },
     { src: 'img/vangogh3-2025.jpg', fit: 'contain' },
+    { src: 'img/sonne-der-anden-2026.jpg', fit: 'contain' },
   ].concat(fresh.concat(rest).map((w) => ({ src: clImg(w.img, 1400), fit: 'contain' })));
 })();
 const HERO_INTERVAL = 4000; // ms bis zum nächsten Bild (Überblendung 1 s)
