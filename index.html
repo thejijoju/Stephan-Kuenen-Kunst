@@ -81,12 +81,16 @@
   a { color: inherit; text-decoration: none; }
   input, textarea, button { font-family: inherit; }
   .sk-hamburger { display: none; }
+  .sk-hero-img { position: relative; overflow: hidden; }
+  .sk-hero-slide { position: absolute; inset: 0; transition: opacity 1.4s ease-in-out; }
+  @media (prefers-reduced-motion: reduce) { .sk-hero-slide { transition: none; } }
   @media (max-width: 760px) {
     .sk-nav { display: none !important; }
     .sk-hamburger { display: flex !important; }
     header { padding: 14px 20px !important; }
     .sk-hero { grid-template-columns: minmax(0, 1fr) !important; }
     .sk-hero-img { min-height: 240px !important; }
+    .sk-banner { padding: 10px 44px 10px 20px !important; font-size: 13px !important; }
     .sk-hero-text { padding: 40px 20px 36px !important; }
     .sk-h1 { font-size: 42px !important; line-height: 0.96 !important; }
     .sk-wrap { padding-left: 20px !important; padding-right: 20px !important; }
@@ -118,6 +122,15 @@
 </helmet>
 
 <div style="font-family: 'Space Grotesk', sans-serif; color: #161412; background: #fbfaf8; position: relative;">
+
+  <!-- ============ AUSSTELLUNGS-BANNER ============ -->
+  <sc-if value="{{ bannerOpen }}" hint-placeholder-val="{{ false }}">
+    <div class="sk-banner" role="region" aria-label="{{ t.bannerLabel }}" style="position: relative; display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; padding: 11px 56px; background: #161412; color: #fbfaf8; font-size: 14px; line-height: 1.45; text-align: center;">
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: #c9c3b8;">{{ t.bannerKicker }}</span>
+      <span>{{ t.bannerText }}</span>
+      <button onClick="{{ closeBanner }}" aria-label="{{ t.bannerClose }}" style="position: absolute; right: 14px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #fbfaf8; font-size: 22px; line-height: 1; cursor: pointer; padding: 4px 8px; opacity: 0.8;" style-hover="opacity: 1;">×</button>
+    </div>
+  </sc-if>
 
   <!-- ============ HEADER ============ -->
   <header style="position: sticky; top: 0; z-index: 40; display: flex; align-items: center; justify-content: space-between; padding: 18px 56px; background: rgba(251,250,248,0.88); backdrop-filter: blur(10px); border-bottom: 1px solid #eceae5;">
@@ -190,7 +203,11 @@
         <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: 0.12em; text-transform: uppercase; color: #908a7e;">{{ t.price }}</span>
       </div>
     </div>
-    <div class="sk-hero-img" style="min-height: 540px; background: #e7edee url('https://res.cloudinary.com/dmm56rtb0/image/upload/f_auto,q_auto,w_1400/hero-abstract') center/cover no-repeat;"></div>
+    <div class="sk-hero-img" style="min-height: 540px; background: #e7edee;">
+      <sc-for list="{{ heroSlides }}" as="hs" hint-placeholder-count="4">
+        <div class="sk-hero-slide" style="{{ hs.style }}"></div>
+      </sc-for>
+    </div>
   </section>
 
   <!-- ============ SERIEN / THEMES ============ -->
@@ -709,6 +726,7 @@ function buildWorks(){
   out.push({ id: 'F-007', theme: 'koeln', title: 'Ohne Titel (2024)', img: 'img/portrait-turban-2024.jpg', dims: '', ratio: '2586/3435', noteDe: 'Bildnis eines bärtigen Mannes mit farbigem Turban vor türkisblauem Grund. Eine freie Arbeit außerhalb der Serien.', noteEn: 'Portrait of a bearded man in a colourful turban against a turquoise ground. A free work outside the series.' });
   out.push({ id: 'F-008', theme: 'koeln', title: 'Ohne Titel (2025)', img: 'img/portrait-hat-2025.jpg', dims: '', ratio: '2596/3544', noteDe: 'Ein Mann mit schwarzem Hut und Krawatte im Profil vor leuchtend blauem Grund — das Gesicht in pastos aufgetragenen Rot- und Rosatönen aufgebrochen. Eine freie Arbeit außerhalb der Serien.', noteEn: 'A man in a black hat and tie, in profile against a bright blue ground — the face broken open in thickly applied reds and pinks. A free work outside the series.' });
   out.push({ id: 'F-009', theme: 'koeln', title: 'Ohne Titel (2026)', img: 'img/portrait-longhair-2026.jpg', dims: '', ratio: '2692/3644', noteDe: 'Ein Mann mit langem hellem Haar und Hut vor einem bewegten, farbig-abstrakten Grund. Eine freie Arbeit außerhalb der Serien.', noteEn: 'A man with long fair hair and a hat before a lively, colourful abstract ground. A free work outside the series.' });
+  out.push({ id: 'F-010', theme: 'koeln', title: 'Ohne Titel (2026)', img: 'img/abstract-ring-2026.jpg', dims: '', ratio: '2772/2847', noteDe: 'Verschlungene Bögen in Grau-, Grün- und Sandtönen, von schwarzen Linien gefasst — eine abstrakte Komposition, in der sich ein Gesicht zu verbergen scheint. Eine freie Arbeit außerhalb der Serien.', noteEn: 'Intertwined arcs in greys, greens and sand tones, held by black lines — an abstract composition in which a face seems to hide. A free work outside the series.' });
   out.push({ id: 'D-001', theme: 'koeln', title: 'Kölner Dom (2026)', img: 'artworks/dom-2026.jpg', dims: '', ratio: '2308/3312' });
   out.push({ id: 'D-002', theme: 'koeln', title: 'Kölner Dom (2025)', img: 'artworks/dom-2025.jpg', dims: '', ratio: '1872/3817' });
   out.push({ id: 'A-001', theme: 'koeln', title: 'Lebensraum (2023)', img: 'artworks/lebensraum-2023.jpg', dims: '', ratio: '2405/3375', noteDe: 'Mischtechnik auf rostiger Eisenfläche. Ein Leguan vor verwitterten Schichten, dazu das Wort „LEBENSRAUM“ in Blattgold — eine Meditation über Raum, Natur und Vergänglichkeit.', noteEn: 'Mixed media on a rusted iron surface. An iguana before weathered layers, with the word "LEBENSRAUM" (habitat) in gold leaf — a meditation on space, nature and transience.' });
@@ -718,6 +736,19 @@ function buildWorks(){
   return out;
 }
 const WORKS = buildWorks();
+
+// ---------- Startseite: wechselnde Bilder oben rechts ----------
+const HERO_SLIDES = [
+  { src: CL + '/f_auto,q_auto,w_1400/hero-abstract', pos: 'center' },
+  { src: 'img/abstract-ring-2026.jpg', pos: 'center' },
+  { src: 'img/portrait-longhair-2026.jpg', pos: 'center 35%' },
+  { src: 'img/portrait-turban-2024.jpg', pos: 'center 30%' },
+];
+const HERO_INTERVAL = 2000; // ms, die das Bild steht, bevor das nächste überblendet
+
+// ---------- Ausstellungs-Banner ----------
+const BANNER_ID = 'rondorf-2026-11-08';
+const BANNER_UNTIL = new Date('2026-11-08T23:59:59+01:00');
 const MASTERS_COUNT = WORKS.filter((w) => w.theme === 'masters').length;
 
 // ---------- artist style blurbs ----------
@@ -877,6 +908,8 @@ const STRINGS = {
   de: {
     roleLine: 'Maler · Köln', price: 'Preis auf Anfrage',
     navWork: 'Werk', navSeries: 'Serien', navAbout: 'Über', navExhib: 'Ausstellungen', navContact: 'Kontakt',
+    bannerLabel: 'Ausstellungshinweis', bannerKicker: 'Ausstellung', bannerClose: 'Hinweis schließen',
+    bannerText: 'Kulturkirche Rondorf · Sonntag, 8. November, 17 Uhr · Eintritt frei',
     exhibTitle: 'Ausstellungen', exhibKicker: 'Vor Ort', exhibSub: 'Impressionen aus Ausstellungen und Vernissagen — die Werke im Raum.',
     hero1: 'Rahmenlos —', hero2: 'Einblicke in die Kunst',
     heroSub: 'Stephan Kuenen, Maler aus Köln. Geworfene Linien, reine Form — eine lebenslange Auseinandersetzung mit der Farbe.',
@@ -918,6 +951,8 @@ const STRINGS = {
   en: {
     roleLine: 'Painter · Cologne', price: 'Price on request',
     navWork: 'Work', navSeries: 'Series', navAbout: 'About', navExhib: 'Exhibitions', navContact: 'Contact',
+    bannerLabel: 'Exhibition notice', bannerKicker: 'Exhibition', bannerClose: 'Close notice',
+    bannerText: 'Kulturkirche Rondorf · Sunday, 8 November, 5 pm · Free entry',
     exhibTitle: 'Exhibitions', exhibKicker: 'On site', exhibSub: 'Impressions from exhibitions and openings — the works in the room.',
     hero1: 'Frameless —', hero2: 'Insights into art',
     heroSub: 'Stephan Kuenen, a painter from Cologne. Thrown lines, pure form — a lifelong conversation with colour.',
@@ -959,16 +994,32 @@ const STRINGS = {
 };
 
 class Component extends DCLogic {
-  state = { lang: 'de', filter: 'all', sel: null, inqRef: '', sent: false, submitting: false, view: 'home', collTheme: null, exhibSel: null, menuOpen: false };
+  state = { lang: 'de', filter: 'all', sel: null, inqRef: '', sent: false, submitting: false, view: 'home', collTheme: null, exhibSel: null, menuOpen: false, heroIdx: 0, bannerOpen: false };
   scrollers = {};
 
   componentDidMount() {
     try { const l = localStorage.getItem('sk_lang'); if (l === 'de' || l === 'en') this.setState({ lang: l }); } catch (e) {}
+    let bannerClosed = false;
+    try { bannerClosed = localStorage.getItem('sk_banner_closed') === BANNER_ID; } catch (e) {}
+    if (!bannerClosed && new Date() <= BANNER_UNTIL) this.setState({ bannerOpen: true });
+    let reduce = false;
+    try { reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+    if (!reduce) {
+      // 2 s stehen lassen, dann 1,4 s überblenden
+      this._heroTimer = setInterval(() => this.setState({ heroIdx: (this.state.heroIdx + 1) % HERO_SLIDES.length }), HERO_INTERVAL + 1400);
+    }
     this.syncHash();
     this._hashHandler = () => this.syncHash();
     window.addEventListener('hashchange', this._hashHandler);
   }
-  componentWillUnmount() { if (this._hashHandler) window.removeEventListener('hashchange', this._hashHandler); }
+  componentWillUnmount() {
+    if (this._hashHandler) window.removeEventListener('hashchange', this._hashHandler);
+    if (this._heroTimer) clearInterval(this._heroTimer);
+  }
+  closeBanner = () => {
+    try { localStorage.setItem('sk_banner_closed', BANNER_ID); } catch (e) {}
+    this.setState({ bannerOpen: false });
+  };
   syncHash() {
     const m = (typeof location !== 'undefined' ? (location.hash || '') : '').match(/collection=([a-z]+)/i);
     if (m && ['wandflicken', 'masters', 'koeln'].includes(m[1])) {
@@ -1127,6 +1178,8 @@ class Component extends DCLogic {
       menuOpen: !!this.state.menuOpen,
       toggleMenu: () => this.setState({ menuOpen: !this.state.menuOpen }),
       closeMenu: () => this.setState({ menuOpen: false }),
+      bannerOpen: !!this.state.bannerOpen, closeBanner: this.closeBanner,
+      heroSlides: HERO_SLIDES.map((h, i) => ({ style: { background: "url('" + h.src + "') " + h.pos + '/cover no-repeat', opacity: i === this.state.heroIdx ? 1 : 0 } })),
       themeCards, rows,
       exhibitions, exhibSel: this.state.exhibSel, closeExhib: () => this.setState({ exhibSel: null }),
       exhibSelStyle: this.state.exhibSel ? { width: '94vw', height: '90vh', background: "url('" + this.state.exhibSel + "') center/contain no-repeat" } : null,
