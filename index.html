@@ -86,7 +86,7 @@
   .sk-ann { animation: skAnnRise .6s cubic-bezier(.2,.7,.2,1) both; }
   @keyframes skAnnFade { from { opacity: 0; } to { opacity: 1; } }
   @keyframes skAnnRise { from { opacity: 0; transform: translateY(18px) scale(.98); } to { opacity: 1; transform: none; } }
-  .sk-ann-frame { padding: 16px; border-radius: 2px; background: linear-gradient(135deg, #7a5a17 0%, #e8cd78 22%, #a9832a 45%, #f4df93 64%, #8d6a1d 85%, #d9b75c 100%); box-shadow: 0 22px 44px -16px rgba(0,0,0,0.75), inset 0 0 0 1px rgba(255,240,190,0.45), inset 0 0 0 4px rgba(122,90,23,0.55), inset 0 0 10px rgba(0,0,0,0.35); }
+  .sk-ann-frame { width: 100%; max-width: 380px; justify-self: center; padding: 16px; border-radius: 2px; background: linear-gradient(135deg, #7a5a17 0%, #e8cd78 22%, #a9832a 45%, #f4df93 64%, #8d6a1d 85%, #d9b75c 100%); box-shadow: 0 22px 44px -16px rgba(0,0,0,0.75), inset 0 0 0 1px rgba(255,240,190,0.45), inset 0 0 0 4px rgba(122,90,23,0.55), inset 0 0 10px rgba(0,0,0,0.35); }
   .sk-ann-mat { padding: 14px; background: #f3ede0; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.12), inset 0 2px 6px rgba(0,0,0,0.25); }
   .sk-ann-mat img { box-shadow: 0 1px 3px rgba(0,0,0,0.25); }
   .sk-hero-slide { position: absolute; inset: 0; transition: opacity 1s ease-in-out; }
@@ -98,7 +98,7 @@
     .sk-hero-img { min-height: 240px !important; }
     .sk-ann-outer { padding: 12px !important; align-items: flex-end !important; }
     .sk-ann { grid-template-columns: minmax(0, 1fr) !important; gap: 22px !important; padding: 56px 22px 26px !important; max-height: 94vh; overflow-y: auto; }
-    .sk-ann-frame { padding: 10px !important; max-width: 300px; margin: 0 auto; width: 100%; }
+    .sk-ann-frame { padding: 10px !important; max-width: 230px !important; margin: 0 auto; }
     .sk-ann-mat { padding: 8px !important; }
     .sk-ann-title { font-size: 32px !important; }
     .sk-hero-text { padding: 40px 20px 36px !important; }
@@ -140,7 +140,7 @@
         <button onClick="{{ closeBanner }}" aria-label="{{ t.bannerClose }}" style="position: absolute; top: 12px; right: 12px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.08); border: none; border-radius: 50%; color: #fbfaf8; font-size: 26px; line-height: 1; cursor: pointer;" style-hover="background: rgba(255,255,255,0.18);">×</button>
         <div class="sk-ann-frame">
           <div class="sk-ann-mat">
-            <img src="img/vier-kerzen-2026.jpg" alt="{{ t.bannerImgAlt }}" style="display: block; width: 100%; height: auto;" />
+            <img src="img/emu-2026.jpg" alt="{{ t.bannerImgAlt }}" style="display: block; width: 100%; height: auto;" />
           </div>
         </div>
         <div>
@@ -763,6 +763,7 @@ function buildWorks(){
   out.push({ id: 'F-015', theme: 'koeln', title: 'Unter Strom', img: 'img/unter-strom.jpg', dims: '', ratio: '3654/2600', noteDe: 'Eine Malerin vollendet ein Bildnis im Stil der alten Meister — umgeben von Platinen, Lüfter, Steckdosen und Kabelsträngen, die aus dem Porträt herauswachsen. Alte Kunst trifft Technik; signiert mit „KUeNenST“. Eine freie Arbeit außerhalb der Serien.', noteEn: 'A woman painter finishes a portrait in the manner of the old masters — surrounded by circuit boards, a fan, sockets and bundles of cable growing out of the portrait. Old art meets technology; signed “KUeNenST”. A free work outside the series.' });
   out.push({ id: 'F-016', theme: 'koeln', title: 'Farbreihen', img: 'img/farbreihen.jpg', dims: '', ratio: '1856/3535', noteDe: 'Reihe um Reihe schmaler, senkrechter Farbstreifen — Rot, Ocker, Rosa, Türkis, Grün und Blau dicht nebeneinander, jede Zeile ein eigener Rhythmus. Eine abstrakte freie Arbeit außerhalb der Serien.', noteEn: 'Row upon row of narrow vertical stripes of colour — red, ochre, pink, turquoise, green and blue set closely side by side, each row with its own rhythm. An abstract free work outside the series.' });
   out.push({ id: 'F-017', theme: 'koeln', title: 'Lichtschein', img: 'img/lichtschein.jpg', dims: '', ratio: '2565/3183', noteDe: 'Eine einzelne brennende Kerze in warmem Schein, umgeben von einem dichten, pastos gespachtelten Gewebe aus Rot, Rosa, Grün und Erdtönen. Eine freie Arbeit außerhalb der Serien.', noteEn: 'A single burning candle in a warm glow, surrounded by a dense, thickly worked web of red, pink, green and earth tones. A free work outside the series.' });
+  out.push({ id: 'F-018', theme: 'koeln', title: 'Der Emu (2026)', img: 'img/emu-2026.jpg', dims: '', ratio: '2831/3375', noteDe: 'Ein Emu blickt frontal aus dem Bild — struppiges dunkles Gefieder, rosafarbener Hals und zwei große, pastos aufgebaute Augen, in denen es rot und golden glüht, vor türkisblauem Grund. Eine freie Arbeit außerhalb der Serien.', noteEn: 'An emu stares straight out of the picture — shaggy dark plumage, a pink neck and two large, thickly built-up eyes glowing red and gold, against a turquoise ground. A free work outside the series.' });
   out.push({ id: 'D-001', theme: 'koeln', title: 'Kölner Dom (2026)', img: 'artworks/dom-2026.jpg', dims: '', ratio: '2308/3312' });
   out.push({ id: 'D-002', theme: 'koeln', title: 'Kölner Dom (2025)', img: 'artworks/dom-2025.jpg', dims: '', ratio: '1872/3817' });
   out.push({ id: 'A-001', theme: 'koeln', title: 'Lebensraum (2023)', img: 'artworks/lebensraum-2023.jpg', dims: '', ratio: '2405/3375', noteDe: 'Mischtechnik auf rostiger Eisenfläche. Ein Leguan vor verwitterten Schichten, dazu das Wort „LEBENSRAUM“ in Blattgold — eine Meditation über Raum, Natur und Vergänglichkeit.', noteEn: 'Mixed media on a rusted iron surface. An iguana before weathered layers, with the word "LEBENSRAUM" (habitat) in gold leaf — a meditation on space, nature and transience.' });
@@ -789,7 +790,7 @@ const HERO_SLIDES = (() => {
 const HERO_INTERVAL = 2000; // ms bis zum nächsten Bild (Überblendung 1 s)
 
 // ---------- Ausstellungs-Banner ----------
-const BANNER_ID = 'rondorf-2026-11-08-v2';
+const BANNER_ID = 'rondorf-2026-11-08-v3';
 const BANNER_UNTIL = new Date('2026-11-08T23:59:59+01:00');
 const MASTERS_COUNT = WORKS.filter((w) => w.theme === 'masters').length;
 
@@ -951,10 +952,10 @@ const STRINGS = {
   de: {
     roleLine: 'Maler · Köln', price: 'Preis auf Anfrage',
     navWork: 'Werk', navSeries: 'Serien', navAbout: 'Über', navExhib: 'Ausstellungen', navContact: 'Kontakt',
-    bannerLabel: 'Ausstellungshinweis', bannerKicker: 'Ausstellung', bannerClose: 'Hinweis schließen',
-    bannerLead: 'Herzliche Einladung zur Ausstellung von Stephan Kuenen.',
+    bannerLabel: 'Hinweis zur Vernissage', bannerKicker: 'Vernissage', bannerClose: 'Hinweis schließen',
+    bannerLead: 'Herzliche Einladung zur Vernissage von Stephan Kuenen.',
     bannerDate: 'Sonntag, 8. November 2026', bannerTime: '17 Uhr', bannerFree: 'Eintritt frei', bannerOk: 'Schließen',
-    bannerImgAlt: 'Vier Kerzen — Gemälde von Stephan Kuenen im goldenen Rahmen',
+    bannerImgAlt: 'Der Emu — Gemälde von Stephan Kuenen im goldenen Rahmen',
     exhibTitle: 'Ausstellungen', exhibKicker: 'Vor Ort', exhibSub: 'Impressionen aus Ausstellungen und Vernissagen — die Werke im Raum.',
     hero1: 'Rahmenlos —', hero2: 'Einblicke in die Kunst',
     heroSub: 'Stephan Kuenen, Maler aus Köln. Geworfene Linien, reine Form — eine lebenslange Auseinandersetzung mit der Farbe.',
@@ -996,10 +997,10 @@ const STRINGS = {
   en: {
     roleLine: 'Painter · Cologne', price: 'Price on request',
     navWork: 'Work', navSeries: 'Series', navAbout: 'About', navExhib: 'Exhibitions', navContact: 'Contact',
-    bannerLabel: 'Exhibition notice', bannerKicker: 'Exhibition', bannerClose: 'Close notice',
-    bannerLead: 'You are warmly invited to an exhibition by Stephan Kuenen.',
+    bannerLabel: 'Exhibition opening', bannerKicker: 'Exhibition opening', bannerClose: 'Close notice',
+    bannerLead: 'You are warmly invited to the opening of Stephan Kuenen’s exhibition.',
     bannerDate: 'Sunday, 8 November 2026', bannerTime: '5 pm', bannerFree: 'Free entry', bannerOk: 'Close',
-    bannerImgAlt: 'Four Candles — painting by Stephan Kuenen in a gilded frame',
+    bannerImgAlt: 'The Emu — painting by Stephan Kuenen in a gilded frame',
     exhibTitle: 'Exhibitions', exhibKicker: 'On site', exhibSub: 'Impressions from exhibitions and openings — the works in the room.',
     hero1: 'Frameless —', hero2: 'Insights into art',
     heroSub: 'Stephan Kuenen, a painter from Cologne. Thrown lines, pure form — a lifelong conversation with colour.',
